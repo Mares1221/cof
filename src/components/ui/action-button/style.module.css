@@ -1,0 +1,18 @@
+.card {
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    transform 150ms ease,
+    box-shadow 100ms ease;
+  padding: var(--mantine-spacing-xl);
+  padding-left: calc(var(--mantine-spacing-xl) * 2);
+  @mixin hover {
+    background-color: #f0f0f0;
+  }
+}
+
+.disabled {
+  cursor: not-allowed;
+  /* background-color: var(--mantine-color-gray-1); */
+}

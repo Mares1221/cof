@@ -1,0 +1,15 @@
+.pageFilter {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  /* margin-top: 10px; */
+  /* margin-bottom: 10px; */
+  /* background: rgb(248, 249, 250); */
+  width: 100%;
+  background: rgb(255, 244, 244);
+  padding: 6px;
+}
+.sectionElement {
+  display: flex;
+  gap: 15;
+}

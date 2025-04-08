@@ -1,0 +1,22 @@
+.container {
+  border-radius: var(--mantine-radius-md);
+  background: white;
+  padding: 0;
+}
+
+.scroll {
+  overflow-x: auto;
+  border-radius: var(--mantine-radius-xs);
+}
+
+.pagination {
+  padding: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  border-radius: var(--mantine-radius-md);
+}
+.tableCell {
+  padding: 5px;
+  border: 1px solid #dee2e6;
+}

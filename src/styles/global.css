@@ -1,0 +1,19 @@
+a:-webkit-any-link {
+  text-decoration: none;
+}
+@media print {
+  .navbar,
+  .footer,
+  .sidebar {
+    display: none !important;
+  }
+
+  body * {
+    /* visibility: hidden; */
+  }
+  .print-page {
+    visibility: visible;
+    display: block !important;
+    page-break-after: always;
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name" : "hoa-admin",
+  "script" : "npx next start",
+  "env_production" : {
+    "PORT": 30610
+  }
+}
