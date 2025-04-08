@@ -23,11 +23,9 @@ const PieChart = () => {
         dataLabels: [
           {
             enabled: true,
-            distance: 20,
           },
           {
             enabled: true,
-            distance: -40,
             format: "{point.percentage:.1f}%",
             style: {
               fontSize: "1.2em",
