@@ -7,7 +7,7 @@ import { TextField } from "@/components/ui/form/text-field";
 import { IComplex } from "@/interfaces/complex";
 import HttpHandler from "@/utils/http/http-handler";
 import { message } from "@/utils/message";
-import { Grid, Stack } from "@mantine/core";
+import { Button, Grid, Group, Stack } from "@mantine/core";
 import { useState } from "react";
 import * as yup from "yup";
 
@@ -99,6 +99,11 @@ export default function ComplexForm({
                   label="Агуулах"
                   placeholder="Агуулах"
                 />
+              </Grid.Col>
+              <Grid.Col span={12}>
+                <Group justify="flex-end" gap="xs">
+                <Button>Хадгалах</Button>
+                </Group>
               </Grid.Col>
             </Grid>
           </Stack>

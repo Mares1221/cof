@@ -3,7 +3,6 @@
 import { complexApi } from "@/apis";
 import PageLayout from "@/components/layout/page-layout/page-layout";
 import { ActionButton } from "@/components/ui/action-button/page";
-import CoreDrawer from "@/components/ui/drawer/page";
 import { IFormRef } from "@/components/ui/form";
 import {
   ColumnType,
@@ -15,20 +14,19 @@ import { IComplex } from "@/interfaces/complex";
 import { Complex } from "@/models/complex";
 import { errorParse } from "@/utils/errorParse";
 import { message } from "@/utils/message";
-import { Button, Group, TextInput } from "@mantine/core";
+import { Button, Drawer, Group, Text, TextInput } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import { openContextModal } from "@mantine/modals";
 import {
   IconBuilding,
   IconDownload,
-  IconEditCircle,
   IconHome,
   IconParking,
   IconPlus,
   IconReload,
   IconSearch,
-  IconTrash,
 } from "@tabler/icons-react";
+import "boxicons/css/boxicons.min.css";
 import { useRef, useState } from "react";
 import ComplexForm from "./form";
 
@@ -101,7 +99,6 @@ export default function ComplexPage() {
     >
       <Group gap="xs">
         <TextInput
-          w={250}
           placeholder="Хайх"
           value={filters?.query || ""}
           leftSection={<IconSearch size={18} />}
@@ -126,28 +123,21 @@ export default function ComplexPage() {
           query: debounced,
         }}
       />
-      <CoreDrawer
+      {/* <CoreDrawer
         opened={action[0]}
         onClose={() => setAction([false, null])}
         title={action[1] ? "Хотхон засах" : "Хотхон бүртгэл"}
         description="Хотхон мэдээлэл бүртгэл"
-        extra={[
-          <Button
-            key={1}
-            size="sm"
-            variant="default"
-            onClick={() => setAction([false, null])}
-          >
-            Болих
-          </Button>,
-          <Button
-            key={2}
-            loading={loading}
-            onClick={() => formRef.current?.submit()}
-          >
-            Хадгалах
-          </Button>,
-        ]}
+      > */}
+      <Drawer
+        opened={action[0]}
+        onClose={() => setAction([false, null])}
+        title={
+          <Text size="md" fw={600}>
+            {" "}
+            {action[1] ? "Хотхон засах" : "Хотхон бүртгэл"}
+          </Text>
+        }
       >
         <ComplexForm
           formRef={formRef}
@@ -157,7 +147,7 @@ export default function ComplexPage() {
             setAction([false, null]), tableRef.current?.reload();
           }}
         />
-      </CoreDrawer>
+      </Drawer>
     </PageLayout>
   );
 }
@@ -180,16 +170,8 @@ const useHeader = ({
       <RowAction
         onClick={(key) => onClick(key, record)}
         extra={{
-          edit: (
-            <ActionButton icon={<IconEditCircle size={18} color="black" />}>
-              Засах
-            </ActionButton>
-          ),
-          delete: (
-            <ActionButton icon={<IconTrash size={18} color="black" />}>
-              Устгах
-            </ActionButton>
-          ),
+          edit: <ActionButton>Засах</ActionButton>,
+          delete: <ActionButton>Устгах</ActionButton>,
         }}
       />
     ),

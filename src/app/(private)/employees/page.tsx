@@ -13,19 +13,13 @@ import { IUser } from "@/interfaces/user";
 import { ErrorMessage } from "@/utils/http/http-handler";
 import { message } from "@/utils/message";
 import { formatDateTime } from "@/utils/time-age";
-import { Button, Flex, Group, Select, Text, TextInput } from "@mantine/core";
+import { Button, Group, Select, TextInput } from "@mantine/core";
 import { openContextModal } from "@mantine/modals";
-import {
-  IconEditCircle,
-  IconPlus,
-  IconReload,
-  IconSearch,
-  IconTrash,
-} from "@tabler/icons-react";
+import { IconPlus, IconReload, IconSearch } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
-import NewEmployees from "./new";
 import EditEmployees from "./edit";
+import NewEmployees from "./new";
 
 export default function EmployeesPage() {
   const router = useRouter();
@@ -144,16 +138,8 @@ const useHeader = ({
       <RowAction
         onClick={(key) => onClick(key, record)}
         extra={{
-          edit: (
-            <ActionButton icon={<IconEditCircle size={18} color="black" />}>
-              Засах
-            </ActionButton>
-          ),
-          remove: (
-            <ActionButton icon={<IconTrash size={18} color="black" />}>
-              Устгах
-            </ActionButton>
-          ),
+          edit: <ActionButton>Засах</ActionButton>,
+          remove: <ActionButton>Устгах</ActionButton>,
         }}
       />
     ),

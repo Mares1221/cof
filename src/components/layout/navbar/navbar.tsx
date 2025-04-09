@@ -1,9 +1,5 @@
 import { usePermission } from "@/hooks/use-permission";
-import {
-  Group,
-  ScrollArea,
-  Text
-} from "@mantine/core";
+import { Group, ScrollArea, Text } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import {
   IconBuilding,
@@ -11,7 +7,7 @@ import {
   IconDoor,
   IconHome,
   IconSettings,
-  IconUser
+  IconUser,
 } from "@tabler/icons-react";
 import { LinksGroup } from "./navbar-link-group";
 import classes from "./navbar.module.css";

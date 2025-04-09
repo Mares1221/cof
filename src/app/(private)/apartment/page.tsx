@@ -22,12 +22,10 @@ import { useDebouncedValue } from "@mantine/hooks";
 import { openContextModal } from "@mantine/modals";
 import {
   IconDoor,
-  IconEditCircle,
   IconPlus,
   IconReload,
   IconRuler2,
   IconSearch,
-  IconTrash,
 } from "@tabler/icons-react";
 import { useRef, useState } from "react";
 import ApartmentForm from "./form";
@@ -243,16 +241,8 @@ const useHeader = ({
       <RowAction
         onClick={(key) => onClick(key, record)}
         extra={{
-          edit: (
-            <ActionButton icon={<IconEditCircle size={18} color="black" />}>
-              Засах
-            </ActionButton>
-          ),
-          delete: (
-            <ActionButton icon={<IconTrash size={18} color="black" />}>
-              Устгах
-            </ActionButton>
-          ),
+          edit: <ActionButton>Засах</ActionButton>,
+          delete: <ActionButton>Устгах</ActionButton>,
         }}
       />
     ),

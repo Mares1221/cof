@@ -5,6 +5,7 @@ import PageLayout from "@/components/layout/page-layout/page-layout";
 import { ActionButton } from "@/components/ui/action-button/page";
 import CoreDrawer from "@/components/ui/drawer/page";
 import { IFormRef } from "@/components/ui/form";
+import { SingleComboboxInput } from "@/components/ui/form/single-combobox-input";
 import {
   ColumnType,
   ITableRef,
@@ -20,17 +21,14 @@ import { useDebouncedValue } from "@mantine/hooks";
 import { openContextModal } from "@mantine/modals";
 import {
   IconDownload,
-  IconEditCircle,
   IconHome,
   IconParking,
   IconPlus,
   IconReload,
   IconSearch,
-  IconTrash,
 } from "@tabler/icons-react";
 import { useRef, useState } from "react";
 import BuildingForm from "./form";
-import { SingleComboboxInput } from "@/components/ui/form/single-combobox-input";
 
 const initialFilters: {
   query: string | null;
@@ -216,16 +214,8 @@ const useHeader = ({
       <RowAction
         onClick={(key) => onClick(key, record)}
         extra={{
-          edit: (
-            <ActionButton icon={<IconEditCircle size={18} color="black" />}>
-              Засах
-            </ActionButton>
-          ),
-          delete: (
-            <ActionButton icon={<IconTrash size={18} color="black" />}>
-              Устгах
-            </ActionButton>
-          ),
+          edit: <ActionButton>Засах</ActionButton>,
+          delete: <ActionButton>Устгах</ActionButton>,
         }}
       />
     ),
@@ -243,12 +233,7 @@ const useHeader = ({
   {
     title: "Орон сууц",
     align: "left",
-    render: (record) => (
-      <Group gap="xs">
-        <IconHome size={16} />
-        {record?.totalApartment || "-"}
-      </Group>
-    ),
+    render: (record) => record?.totalApartment || "-",
   },
   {
     title: "Орц",
@@ -259,12 +244,7 @@ const useHeader = ({
   {
     title: "Зогсоол",
     align: "left",
-    render: (record) => (
-      <Group gap="xs">
-        <IconParking size={16} />
-        {record?.totalParking || "-"}
-      </Group>
-    ),
+    render: (record) => record?.totalParking || "-",
   },
   {
     title: "Агуулах",

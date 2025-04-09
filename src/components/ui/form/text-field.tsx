@@ -16,6 +16,8 @@ export function TextField({
   return (
     <TextInput
       {...rest}
+      radius="xl"
+      variant="filled"
       error={error}
       value={value}
       onChange={(e) => {

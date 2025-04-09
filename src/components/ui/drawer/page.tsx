@@ -54,7 +54,6 @@ export default function CoreDrawer({
             </Flex>
           )}
         </Flex>
-        <Divider size="sm" color="green" />
         {children}
       </Stack>
     </Drawer>

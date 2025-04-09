@@ -16,13 +16,7 @@ import { formatDate } from "@/utils/time-age";
 import { Button, Group, Loader, Text, TextInput, Tooltip } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import { openContextModal } from "@mantine/modals";
-import {
-  IconEdit,
-  IconPlus,
-  IconReload,
-  IconSearch,
-  IconTrash,
-} from "@tabler/icons-react";
+import { IconPlus, IconReload, IconSearch } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
@@ -140,12 +134,8 @@ const useHeader = ({
       <RowAction
         onClick={(key) => onClick(key, record)}
         extra={{
-          edit: (
-            <ActionButton icon={<IconEdit size={18} />}>Засварлах</ActionButton>
-          ),
-          delete: (
-            <ActionButton icon={<IconTrash size={18} />}>Устгах</ActionButton>
-          ),
+          edit: <ActionButton>Засварлах</ActionButton>,
+          delete: <ActionButton>Устгах</ActionButton>,
         }}
       />
     ),

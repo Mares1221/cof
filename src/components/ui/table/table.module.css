@@ -1,79 +1,58 @@
-/* Ерөнхий контейнер */
 .container {
   border-radius: var(--mantine-radius-md);
   background: white;
-  box-shadow: var(--mantine-shadow-sm); /* Хүснэгтэд сүүдэр нэмнэ */
-  overflow: hidden; /* Хүрээний гадна талын элементүүдийг нууна */
+  box-shadow: var(--mantine-shadow-sm);
+  overflow: hidden;
 }
 
-/* Хүснэгтийн scroll хэсэг */
 a .scroll {
   overflow-x: auto;
   border-radius: var(--mantine-radius-md);
 }
-
-/* Хүснэгтийн гарчиг (Th) */
 .th {
-  background: var(
-    --mantine-color-blue-6
-  ); /* Цэнхэр дэвсгэр (brand-ийн гол өнгө) */
-  color: white !important; /* Гарчигны текст цагаан */
-  padding: 12px 16px !important; /* Илүү зайтай padding */
-  border-bottom: 2px solid var(--mantine-color-blue-7) !important; /* Доод хүрээ */
+  color: black !important;
+  padding: 12px 16px !important;
+  border-bottom: 2px solid var(--mantine-color-dark-7) !important;
 }
 
-/* Гарчиг доторх элементүүд */
 .th .button {
   display: flex;
   align-items: center;
-  gap: 8px; /* Текст ба icon-ийн хоорондын зай */
+  gap: 8px;
 }
 
-/* Гарчиг доторх текст */
 .th .child {
   font-weight: 600;
   font-size: 14px;
 }
 
-/* Гарчиг доторх icon */
 .th .icon {
   display: flex;
   align-items: center;
 }
 
-/* Хүснэгтийн мөр ба нүд (Td) */
 .td {
-  padding: 12px 16px !important; /* Илүү зайтай padding */
-  border-bottom: 1px solid var(--mantine-color-gray-2) !important; /* Мөр хоорондын хүрээ */
+  padding: 12px 16px !important;
+  border-bottom: 1px solid var(--mantine-color-gray-2) !important;
   font-size: 14px;
   color: var(--mantine-color-dark-6);
 }
 
-/* Hover эффект */
-.td:hover {
-  background-color: var(--mantine-color-blue-0); /* Цэнхэр цайвар дэвсгэр */
-}
-
-/* Сонгогдсон мөр */
 .td[selected] {
-  background-color: var(
-    --mantine-color-blue-1
-  ) !important; /* Сонгогдсон мөрийн дэвсгэр */
+  background-color: var(--mantine-color-dark-1) !important;
 }
 
-/* Хоосон хүснэгтийн загвар */
 .empty {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   gap: 10px;
-  height: 200px; /* Илүү өндөр зай */
+  height: 200px;
   background: var(--mantine-color-gray-0);
   border-radius: var(--mantine-radius-md);
 }
 
-/* Pagination */
 .pagination {
   padding: 1rem;
   display: flex;
@@ -82,7 +61,6 @@ a .scroll {
   border-radius: var(--mantine-radius-md);
 }
 
-/* Хүснэгтийн нүдний ерөнхий загвар */
 .tableCell {
   padding: 5px;
   border: 1px solid var(--mantine-color-gray-2);

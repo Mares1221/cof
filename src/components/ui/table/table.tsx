@@ -117,7 +117,7 @@ function TableFn(
     renderRow,
     onResult,
   }: Props,
-  ref: React.Ref<ITableRef>,
+  ref: React.Ref<ITableRef>
 ) {
   const tableRef = React.useRef<HTMLTableElement>(null);
   const [page, setPage] = React.useState(1);
@@ -141,10 +141,10 @@ function TableFn(
         count: dataSource.length,
         rows: dataSource.slice(
           page === 1 ? 0 : page * limit - limit,
-          page * limit,
+          page * limit
         ),
       },
-    },
+    }
   );
 
   const [sorted, setSorting] = React.useState<string[]>([]);
@@ -275,7 +275,7 @@ function TableFn(
                 value={currentPage}
                 onChange={(nextPage) => setPage(nextPage)}
                 total={data.count / limit + (data.count % limit > 0 ? 1 : 0)}
-                color="blue" // Pagination-ийн өнгийг цэнхэр болгох
+                color="blue"
               />
             </div>
           ) : null}
