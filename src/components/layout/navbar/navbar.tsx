@@ -1,4 +1,3 @@
-import { Logo } from "@/components/ui/svg/logo";
 import { usePermission } from "@/hooks/use-permission";
 import {
   Group,
@@ -96,7 +95,6 @@ export function Navbar({ opened, toggle }: any) {
       {!isHeader && (
         <div className={classes.header}>
           <Group gap="xs">
-            <Logo />
             <Text fw={600} size="25px">
               interlock
             </Text>

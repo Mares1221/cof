@@ -1,5 +1,4 @@
 import { IPerm } from "@/models/auth";
-import { IReference } from "./reference";
 
 export type IType = {
   code: string;
@@ -19,14 +18,14 @@ export type IPermission = {
 };
 
 export interface IGeneral {
-  userTypes: IReference[];
-  position: IReference[];
-  categoryType: IReference[];
-  apartmentType: IReference[];
-  transactionType: IReference[];
-  scheduleType: IReference[];
-  cashFlow: IReference[];
-  capacityType: IReference[];
+  userTypes: any;
+  position: any;
+  categoryType: any;
+  apartmentType: any;
+  transactionType: any;
+  scheduleType: any;
+  cashFlow: any;
+  capacityType: any;
   perm: IPerm[];
   permissions: IPermission[];
   permissionGroups: IType[];

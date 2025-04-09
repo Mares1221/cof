@@ -17,7 +17,7 @@
 
 .activeControl {
   background: light-dark(
-    var(--mantine-color-green-1),
+    var(--mantine-color-blue-1),
     var(--mantine-color-dark-7)
   );
 }

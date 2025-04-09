@@ -1,13 +1,12 @@
 import { IApartment } from "@/interfaces/apartment";
 import { IBuilding } from "@/interfaces/building";
-import { ICategory } from "@/interfaces/category";
 import { IComplex } from "@/interfaces/complex";
 
 export class Apartment implements IApartment {
   apartmentComplex: IComplex;
   apartmentSize: string;
   building: IBuilding;
-  category: ICategory;
+  category: any;
   createdAt: string;
   customer: any;
   deletedAt: string;

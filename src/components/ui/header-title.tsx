@@ -1,6 +1,5 @@
 "use client";
 
-import { Logo } from "@/components/ui/svg/logo";
 import { Divider, Flex, Text } from "@mantine/core";
 
 function HeaderTitle({
@@ -13,7 +12,7 @@ function HeaderTitle({
   return (
     <Flex gap={10} align="center" justify="flex-center" mb={20}>
       <Flex gap={10} align="center" justify="flex-center">
-        <Logo />
+        asdas
         <Divider orientation="vertical" size="sm" />
         <Flex direction="column">
           <Text size="md" fw={600} c="black">

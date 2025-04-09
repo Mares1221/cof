@@ -10,7 +10,6 @@ import { PasswordField } from "@/components/ui/form/password-filed";
 import { RadioField } from "@/components/ui/form/radio-field";
 import { SelectField } from "@/components/ui/form/select-field";
 import { TextField } from "@/components/ui/form/text-field";
-import { IReference } from "@/interfaces/reference";
 import { IUser } from "@/interfaces/user";
 import { RootState } from "@/store";
 import { message } from "@/utils/message";
@@ -47,15 +46,11 @@ export default function EmployeeForm({
   formRef,
   onLoadingStatus,
 }: Props) {
-  const { userTypes, position } = useSelector(
+  const {  position } = useSelector(
     (state: RootState) => state.general,
   );
-  const optionsUserType = userTypes.map((item: IReference) => ({
-    label: item.name,
-    value: item.code,
-  }));
 
-  const optionsPosition = position.map((item: IReference) => ({
+  const optionsPosition = position.map((item: any) => ({
     label: item.name,
     value: item.code,
   }));

@@ -121,7 +121,6 @@ function TableFn(
 ) {
   const tableRef = React.useRef<HTMLTableElement>(null);
   const [page, setPage] = React.useState(1);
-
   const [limit] = React.useState(defaultLimit || 20);
 
   const { data, mutate } = useSwr(
@@ -200,7 +199,6 @@ function TableFn(
                     <span
                       style={{
                         fontWeight: 700,
-                        color: "#2E2E2E",
                         fontSize: "calc(0.9rem)",
                         lineHeight: "1.45",
                       }}
@@ -226,7 +224,9 @@ function TableFn(
                           key={index1}
                           className={classes.td}
                           style={{ textAlign: column.align || "left" }}
-                          bg={selectedRows.includes(index) ? "gray.0" : ""}
+                          {...(selectedRows.includes(index) && {
+                            "data-selected": true,
+                          })}
                           onClick={(e) =>
                             setSelectedRows(e.currentTarget && [index])
                           }
@@ -242,20 +242,15 @@ function TableFn(
               ) : (
                 <BaseTable.Tr>
                   <BaseTable.Td colSpan={columns.length} className={classes.td}>
-                    <Box
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexDirection: "column",
-                        gap: 10,
-                      }}
-                      h={166}
-                    >
-                      <IconDatabaseOff size={33} stroke={1.6} color="#dee2e6" />
+                    <Box className={classes.empty}>
+                      <IconDatabaseOff
+                        size={33}
+                        stroke={1.6}
+                        color="var(--mantine-color-blue-4)"
+                      />
                       <Text
                         style={(theme) => ({
-                          color: theme.colors.gray[4],
+                          color: "var(--mantine-color-blue-6)",
                         })}
                         w={500}
                         fz="md"
@@ -280,6 +275,7 @@ function TableFn(
                 value={currentPage}
                 onChange={(nextPage) => setPage(nextPage)}
                 total={data.count / limit + (data.count % limit > 0 ? 1 : 0)}
+                color="blue" // Pagination-ийн өнгийг цэнхэр болгох
               />
             </div>
           ) : null}

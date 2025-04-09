@@ -2,9 +2,6 @@ import { IApartment } from "@/interfaces/apartment";
 import { IAvatar } from "@/interfaces/avatar";
 import { IBuilding } from "@/interfaces/building";
 import { IComplex } from "@/interfaces/complex";
-import { ICustomer } from "@/interfaces/customer";
-import { IFamilyMembers } from "@/interfaces/family-members";
-import { IPaymentSettings } from "@/interfaces/payment-settings";
 import { IUser } from "@/interfaces/user";
 
 export class User implements IUser {
@@ -13,24 +10,24 @@ export class User implements IUser {
   avatar: IAvatar;
   building: IBuilding;
   createdAt: string;
-  customer: ICustomer;
+  customer: any;
   deletedAt: string;
   doorNumber: string;
   email: string;
   entranceNames: string;
   entranceNumber: string;
-  familyMembers: IFamilyMembers[];
+  familyMembers: any;
   firstName: string;
   floorNumber: string;
   gender: string;
   isActive: boolean;
   lastName: string;
-  paymentSettings: IPaymentSettings;
+  paymentSettings: any;
   phone: string;
   provider: string;
   registerNo: string;
   role: string;
-  tenantMembers: IFamilyMembers[];
+  tenantMembers: any;
   updatedAt: string;
   userStatus: string;
   userStatusDate: string;

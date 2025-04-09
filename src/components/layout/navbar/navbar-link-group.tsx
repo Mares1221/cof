@@ -55,7 +55,7 @@ export function LinksGroup({
         key={link.label}
         style={{
           background:
-            link.link === `/${pathname.split("/")[1]}` ? "#d3f9d8" : "",
+            link.link === `/${pathname.split("/")[1]}` ? "#d0ebff" : "",
         }}
       >
         {link.label}

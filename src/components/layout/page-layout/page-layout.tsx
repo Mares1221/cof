@@ -36,7 +36,7 @@ export default function PageLayout({
         minHeight: "100vh",
       }}
     >
-      <Breadcrumbs separator={<Text size="xs">→</Text>}>
+      <Breadcrumbs separator={<Text size="xs">/</Text>}>
         {[
           {
             label: "Дашбоард",
