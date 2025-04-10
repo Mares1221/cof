@@ -3,6 +3,7 @@
 import "mapbox-gl/dist/mapbox-gl.css";
 import mapboxgl from "mapbox-gl";
 import { useEffect, useRef, useState } from "react";
+import { IconPin } from "@tabler/icons-react";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoiYm9sZGtvdjEiLCJhIjoiY2xpdHg0bGhrMDlkZjNmbzJ1Y2pjeWE2eSJ9.0XXgizx295KsOkq8ChY5fg";
@@ -26,7 +27,6 @@ export default function MapBox({
   const [markers, setMarkers] = useState<mapboxgl.Marker[]>([]);
   const [bounds, setBounds] = useState<mapboxgl.LngLatBounds | null>(null);
 
-  // Map үүсгэх
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: mapContainerRef.current!,
@@ -45,7 +45,6 @@ export default function MapBox({
     };
   }, []);
 
-  // Marker-ууд үүсгэх
   useEffect(() => {
     if (!map || !coordinates.length) return;
 
@@ -56,7 +55,7 @@ export default function MapBox({
 
     coordinates.forEach(({ location, title, description, iconUrl }) => {
       const el = document.createElement("div");
-      el.style.backgroundImage = `url('${iconUrl || "/truck.png"}')`;
+      el.style.backgroundImage = `url('${iconUrl || <IconPin />}')`;
       el.style.width = "40px";
       el.style.height = "40px";
       el.style.backgroundSize = "cover";

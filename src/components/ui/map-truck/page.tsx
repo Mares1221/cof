@@ -1,7 +1,9 @@
 "use client";
 
-import "mapbox-gl/dist/mapbox-gl.css";
+import { ActionIcon, Group } from "@mantine/core";
+import { IconMaximize } from "@tabler/icons-react";
 import mapboxgl from "mapbox-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
 import { useEffect, useRef, useState } from "react";
 
 mapboxgl.accessToken =
@@ -26,11 +28,13 @@ export default function MapBox({
   const [markers, setMarkers] = useState<mapboxgl.Marker[]>([]);
   const [bounds, setBounds] = useState<mapboxgl.LngLatBounds | null>(null);
 
-  // Map үүсгэх
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: mapContainerRef.current!,
-      style: "mapbox://styles/mapbox/outdoors-v12",
+      style: "mapbox://styles/mapbox/streets-v12",
+      // style: "mapbox://styles/mapbox/satellite-v9",
+      // style: "mapbox://styles/mapbox/navigation-day-v1",
+      // style: "mapbox://styles/mapbox/traffic-day-v2",
       center: [106.9137, 47.9205],
       zoom: 12,
       attributionControl: false,
@@ -45,7 +49,6 @@ export default function MapBox({
     };
   }, []);
 
-  // Marker-ууд үүсгэх
   useEffect(() => {
     if (!map || !coordinates.length) return;
 
@@ -109,23 +112,11 @@ export default function MapBox({
           bottom: 0,
         }}
       />
-
-      <button
-        onClick={handleFitBounds}
-        style={{
-          position: "absolute",
-          top: 10,
-          right: 10,
-          zIndex: 1,
-          background: "white",
-          padding: "10px 15px",
-          borderRadius: "8px",
-          boxShadow: "0 2px 6px rgba(0,0,0,0.3)",
-          cursor: "pointer",
-        }}
-      >
-        Томруулж харах
-      </button>
+      <Group gap="xs">
+        <ActionIcon onClick={handleFitBounds} mt="10px" ml="10px">
+          <IconMaximize />
+        </ActionIcon>
+      </Group>
     </div>
   );
 }
