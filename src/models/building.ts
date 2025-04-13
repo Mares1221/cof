@@ -1,52 +1,57 @@
 import { IBuilding } from "@/interfaces/building";
-import { IComplex } from "@/interfaces/complex";
 
 export class Building implements IBuilding {
-  apartmentComplex: IComplex;
-  buildingName: string;
-  createdAt: string;
-  customer: string;
-  deletedAt: string;
-  startDate: string;
-  totalApartment: string;
-  totalEntrance: string;
-  totalParking: string;
-  totalWarehouse: string;
-  updatedAt: string;
-  __v: string;
   _id: string;
-  index: number;
+  createdBy: string;
+  createdAt: string;
+  updatedBy: string;
+  updatedAt: string;
+  deletedBy: string;
+  deletedAt: string;
+  isActive: string;
+  town: string;
+  name: string;
+  description: string;
+  image: string;
+  thumbnail: string;
+  isLocated: string;
+  location: string;
+  coordinates: string[];
 
   constructor({
-    apartmentComplex,
-    buildingName,
-    createdAt,
-    customer,
-    deletedAt,
-    startDate,
-    totalApartment,
-    totalEntrance,
-    totalParking,
-    totalWarehouse,
-    updatedAt,
-    __v,
     _id,
-    index,
+    createdBy,
+    createdAt,
+    updatedBy,
+    updatedAt,
+    deletedBy,
+    deletedAt,
+    isActive,
+    town,
+    name,
+    description,
+    image,
+    thumbnail,
+    isLocated,
+    location,
+    coordinates,
   }: IBuilding) {
-    this.apartmentComplex = apartmentComplex;
-    this.buildingName = buildingName;
-    this.createdAt = createdAt;
-    this.customer = customer;
-    this.deletedAt = deletedAt;
-    this.startDate = startDate;
-    this.totalApartment = totalApartment;
-    this.totalEntrance = totalEntrance;
-    this.totalParking = totalParking;
-    this.totalWarehouse = totalWarehouse;
-    this.updatedAt = updatedAt;
-    this.__v = __v;
     this._id = _id;
-    this.index = index;
+    this.createdBy = createdBy;
+    this.createdAt = createdAt;
+    this.updatedBy = updatedBy;
+    this.updatedAt = updatedAt;
+    this.deletedBy = deletedBy;
+    this.deletedAt = deletedAt;
+    this.isActive = isActive;
+    this.town = town;
+    this.name = name;
+    this.description = description;
+    this.image = image;
+    this.thumbnail = thumbnail;
+    this.isLocated = isLocated;
+    this.location = location;
+    this.coordinates = coordinates;
   }
 
   static fromJson(json: any) {

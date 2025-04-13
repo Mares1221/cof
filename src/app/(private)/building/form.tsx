@@ -1,9 +1,7 @@
 "use client";
 
-import { buildingApi, complexApi } from "@/apis";
+import { buildingApi } from "@/apis";
 import { Form, IFormRef } from "@/components/ui/form";
-import { DatePickerField } from "@/components/ui/form/datepicker-field";
-import { SingleComboField } from "@/components/ui/form/single-combo-field";
 import { TextField } from "@/components/ui/form/text-field";
 import { IBuilding } from "@/interfaces/building";
 import HttpHandler from "@/utils/http/http-handler";
@@ -13,13 +11,13 @@ import { useState } from "react";
 import * as yup from "yup";
 
 const FormSchema = yup.object({
-  apartmentComplex: yup.string().required("Заавал бөглөнө!"),
-  buildingName: yup.string().required("Заавал бөглөнө!"),
-  totalEntrance: yup.string().required("Заавал бөглөнө!"),
-  totalApartment: yup.string().required("Заавал бөглөнө!"),
-  totalParking: yup.string().required("Заавал бөглөнө!"),
-  totalWarehouse: yup.string().required("Заавал бөглөнө!"),
-  startDate: yup.string().required("Заавал бөглөнө!"),
+  town: yup.string().required("Заавал бөглөнө!"),
+  name: yup.string().required("Заавал бөглөнө!"),
+  description: yup.string().required("Заавал бөглөнө!"),
+  image: yup.string().required("Заавал бөглөнө!"),
+  thumbnail: yup.string().required("Заавал бөглөнө!"),
+  isActive: yup.string().required("Заавал бөглөнө!"),
+  coordinates: yup.string().required("Заавал бөглөнө!"),
 });
 
 type Props = {
@@ -35,13 +33,13 @@ export default function BuildingForm({
   onLoadingStatus,
 }: Props) {
   const [data] = useState({
-    apartmentComplex: payload?.apartmentComplex || undefined,
-    buildingName: payload?.buildingName || undefined,
-    totalEntrance: payload?.totalEntrance || undefined,
-    totalApartment: payload?.totalApartment || undefined,
-    totalParking: payload?.totalParking || undefined,
-    totalWarehouse: payload?.totalWarehouse || undefined,
-    startDate: payload?.startDate || undefined,
+    town: payload?.town || undefined,
+    name: payload?.name || undefined,
+    description: payload?.description || undefined,
+    image: payload?.image || undefined,
+    thumbnail: payload?.thumbnail || undefined,
+    isActive: payload?.isActive || false,
+    coordinates: payload?.coordinates || [0, 0],
   });
 
   const onSubmit = async (values: typeof data) => {
@@ -72,65 +70,40 @@ export default function BuildingForm({
           <Stack>
             <Grid>
               <Grid.Col span={{ base: 12, md: 6 }}>
-                <SingleComboField
-                  name="apartmentComplex"
-                  label="Хотхон"
-                  placeholder="Хотхон"
-                  defaultData={
-                    payload?.apartmentComplex
-                      ? {
-                          label: payload?.apartmentComplex.name || "",
-                          value: payload?.apartmentComplex._id || "",
-                        }
-                      : undefined
-                  }
-                  loadData={async (query) => {
-                    const res = await complexApi.list({
-                      filter: { query: query },
-                      offset: {
-                        page: 1,
-                        limit: 20,
-                      },
-                    });
-                    return res.rows.map((item: any) => ({
-                      label: item?.name,
-                      value: item?._id,
-                    }));
-                  }}
-                />
+                <TextField name="town" label="town" placeholder="town" />
               </Grid.Col>
               <Grid.Col span={{ base: 12, md: 6 }}>
-                <TextField name="buildingName" label="Нэр" placeholder="Нэр" />
-              </Grid.Col>
-              <Grid.Col span={12}>
-                <TextField name="totalEntrance" label="Орц" placeholder="Орц" />
+                <TextField name="name" label="name" placeholder="name" />
               </Grid.Col>
               <Grid.Col span={{ base: 12, md: 6 }}>
                 <TextField
-                  name="totalApartment"
-                  label="Орон сууц"
-                  placeholder="Орон сууц"
+                  name="description"
+                  label="description"
+                  placeholder="description"
+                />
+              </Grid.Col>
+              <Grid.Col span={{ base: 12, md: 6 }}>
+                <TextField name="image" label="image" placeholder="image" />
+              </Grid.Col>
+              <Grid.Col span={{ base: 12, md: 6 }}>
+                <TextField
+                  name="thumbnail"
+                  label="thumbnail"
+                  placeholder="thumbnail"
                 />
               </Grid.Col>
               <Grid.Col span={{ base: 12, md: 6 }}>
                 <TextField
-                  name="totalParking"
-                  label="Зогсоол"
-                  placeholder="Зогсоол"
+                  name="isActive"
+                  label="isActive"
+                  placeholder="isActive"
                 />
               </Grid.Col>
               <Grid.Col span={{ base: 12, md: 6 }}>
                 <TextField
-                  name="totalWarehouse"
-                  label="Агуулах"
-                  placeholder="Агуулах"
-                />
-              </Grid.Col>
-              <Grid.Col span={{ base: 12, md: 6 }}>
-                <DatePickerField
-                  name="startDate"
-                  label="Огноо"
-                  placeholder="Огноо"
+                  name="coordinates"
+                  label="coordinates"
+                  placeholder="coordinates"
                 />
               </Grid.Col>
             </Grid>

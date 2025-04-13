@@ -1,34 +1,26 @@
 "use client";
 
-import { apartmentApi, buildingApi, complexApi } from "@/apis";
+import { adApi } from "@/apis";
 import PageLayout from "@/components/layout/page-layout/page-layout";
 import { ActionButton } from "@/components/ui/action-button/page";
 import CoreDrawer from "@/components/ui/drawer/page";
 import { IFormRef } from "@/components/ui/form";
-import { SelectField } from "@/components/ui/form/select-field";
-import { SingleComboboxInput } from "@/components/ui/form/single-combobox-input";
 import {
   ColumnType,
   ITableRef,
   RowAction,
   Table,
 } from "@/components/ui/table/table";
-import { IApartment } from "@/interfaces/apartment";
-import { Apartment } from "@/models/apartment";
+import { IAd } from "@/interfaces/ad";
+import { Ad } from "@/models/ad";
 import { errorParse } from "@/utils/errorParse";
 import { message } from "@/utils/message";
 import { Button, Group, TextInput } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import { openContextModal } from "@mantine/modals";
-import {
-  IconDoor,
-  IconPlus,
-  IconReload,
-  IconRuler2,
-  IconSearch,
-} from "@tabler/icons-react";
+import { IconPlus, IconReload, IconSearch } from "@tabler/icons-react";
 import { useRef, useState } from "react";
-import ApartmentForm from "./form";
+import AdForm from "./form";
 
 const initialFilters: {
   query: string | null;
@@ -40,18 +32,15 @@ const initialFilters: {
   query: null,
 };
 
-export default function ApartmentPage() {
-  const [action, setAction] = useState<[boolean, IApartment | null]>([
-    false,
-    null,
-  ]);
+export default function AdPage() {
+  const [action, setAction] = useState<[boolean, IAd | null]>([false, null]);
   const [filters, setFilters] = useState(initialFilters);
   const [debounced] = useDebouncedValue(filters.query, 300);
   const [loading, setLoading] = useState(false);
   const tableRef = useRef<ITableRef>(null);
   const formRef = useRef<IFormRef>(null);
   const columns = useHeader({
-    onClick: (key: any, record: IApartment) => {
+    onClick: (key: any, record: IAd) => {
       switch (key) {
         case "edit":
           setAction([true, record]);
@@ -59,12 +48,12 @@ export default function ApartmentPage() {
         case "delete":
           openContextModal({
             modal: "confirm",
-            title: "Орон сууц устгах",
+            title: "Зар устгах",
             innerProps: {
               children: "Та устгах үйлдэлийг хийхдээ итгэлтэй байна уу",
               onConfirm: async (close: () => void) => {
                 try {
-                  await apartmentApi.remove(record._id);
+                  await adApi.remove(record._id);
                   message.success("Хүсэлт амжиллтай");
                   close();
                   tableRef.current?.reload();
@@ -94,12 +83,12 @@ export default function ApartmentPage() {
   };
   return (
     <PageLayout
-      title="Орон сууц"
-      description="Орон сууцын жагсаалт, удирдлага"
+      title="Зар"
+      description="Зарын жагсаалт, удирдлага"
       breadcrumb={[
         {
-          label: "Орон сууц",
-          href: "/apartment",
+          label: "Зар",
+          href: "/ad",
         },
       ]}
       extra={
@@ -120,54 +109,6 @@ export default function ApartmentPage() {
           leftSection={<IconSearch size={18} />}
           onChange={(e) => setFilters({ ...filters, query: e.target.value })}
         />
-        <SingleComboboxInput
-          w={200}
-          ref={comboRefComplex}
-          value={filters?.complex || ""}
-          name="apartmentComplex"
-          placeholder="Хотхон"
-          defaultValue={filters?.complex || ""}
-          loadData={async (query) => {
-            const res = await complexApi.list({
-              filter: { query: query },
-              offset: {
-                page: 1,
-                limit: 20,
-              },
-            });
-            return res.rows.map((item: any) => ({
-              label: item?.name,
-              value: item?._id,
-            }));
-          }}
-          onChange={(e: any) => setFilters({ ...filters, complex: e })}
-        />
-        {filters?.complex ? (
-          <SingleComboboxInput
-            w={200}
-            ref={comboRefBuilding}
-            value={filters?.building || ""}
-            name="building"
-            placeholder="Байр"
-            defaultValue={filters?.building || ""}
-            loadData={async (query) => {
-              const res = await buildingApi.list({
-                filter: { query: query, complex: filters?.complex },
-                offset: {
-                  page: 1,
-                  limit: 20,
-                },
-              });
-              return res.rows.map((item: any) => ({
-                label: item?.buildingName,
-                value: item?._id,
-              }));
-            }}
-            onChange={(e: any) => setFilters({ ...filters, building: e })}
-          />
-        ) : (
-          <SelectField name="" options={[]} placeholder={"Байр"} disabled />
-        )}
         <Button
           variant="default"
           leftSection={<IconReload size={18} />}
@@ -180,8 +121,8 @@ export default function ApartmentPage() {
         limit={15}
         ref={tableRef}
         columns={columns}
-        name="swr.apartment.list"
-        loadData={apartmentApi.list}
+        name="swr.ad.list"
+        loadData={adApi.list}
         filters={{
           ...filters,
           query: debounced,
@@ -190,8 +131,8 @@ export default function ApartmentPage() {
       <CoreDrawer
         opened={action[0]}
         onClose={() => setAction([false, null])}
-        title={action[1] ? "Орон сууц засварлах" : "Орон сууц бүртгэх"}
-        description="Хотхонд харьяалагдах орон сууц"
+        title={action[1] ? "Зар засварлах" : "Зар бүртгэх"}
+        description="Зар харьяалагдах Зар"
         extra={[
           <Button
             key={1}
@@ -210,7 +151,7 @@ export default function ApartmentPage() {
           </Button>,
         ]}
       >
-        <ApartmentForm
+        <AdForm
           onSuccess={() => {
             setAction([false, null]), tableRef.current?.reload();
           }}
@@ -226,8 +167,8 @@ export default function ApartmentPage() {
 const useHeader = ({
   onClick,
 }: {
-  onClick: (key: string, record: IApartment) => void;
-}): ColumnType<Apartment>[] => [
+  onClick: (key: string, record: IAd) => void;
+}): ColumnType<Ad>[] => [
   {
     title: "#",
     width: "1px",
@@ -245,46 +186,6 @@ const useHeader = ({
           delete: <ActionButton>Устгах</ActionButton>,
         }}
       />
-    ),
-  },
-  {
-    title: "Хотхоны нэр",
-    align: "left",
-    render: (record) => record?.apartmentComplex?.name || "-",
-  },
-  {
-    title: "Байрны дугаар",
-    align: "left",
-    render: (record) => record?.building?.buildingName || "-",
-  },
-  {
-    title: "Орцны дугаар",
-    align: "left",
-    render: (record) => record?.entranceNumber || "-",
-  },
-  {
-    title: "Давхар",
-    align: "left",
-    render: (record) => record?.floorNumber || "-",
-  },
-  {
-    title: "Хаалга",
-    align: "left",
-    render: (record) => (
-      <Group gap="xs">
-        <IconDoor size={16} />
-        {record?.doorNumber || "-"}
-      </Group>
-    ),
-  },
-  {
-    title: "Байрны хэмжээ",
-    align: "left",
-    render: (record) => (
-      <Group gap="xs">
-        <IconRuler2 size={16} />
-        {record?.apartmentSize || "-"}
-      </Group>
     ),
   },
 ];

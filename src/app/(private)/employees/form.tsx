@@ -1,14 +1,11 @@
 "use client";
 
 import { Form, IFormRef } from "@/components/ui/form";
-import { SimpleGrid, Space } from "@mantine/core";
+import { SimpleGrid } from "@mantine/core";
 import React from "react";
 import * as yup from "yup";
 
 import { userApi } from "@/apis";
-import { PasswordField } from "@/components/ui/form/password-filed";
-import { RadioField } from "@/components/ui/form/radio-field";
-import { SelectField } from "@/components/ui/form/select-field";
 import { TextField } from "@/components/ui/form/text-field";
 import { IUser } from "@/interfaces/user";
 import { RootState } from "@/store";
@@ -16,21 +13,16 @@ import { message } from "@/utils/message";
 import { useSelector } from "react-redux";
 
 const formSchema = yup.object({
-  // userType: yup.string().required("Заавал бөглөнө!"),
-  registerNo: yup.string().required("Заавал бөглөнө!"),
-  firstName: yup.string().required("Заавал бөглөнө!"),
-  lastName: yup.string().required("Заавал бөглөнө!"),
-  email: yup.string().required("Заавал бөглөнө!"),
+  type: yup.string().required("Заавал бөглөнө!"),
   phone: yup.string().required("Заавал бөглөнө!"),
-  phoneSecond: yup.string().optional(),
-  avatar: yup.string().optional(),
-  gender: yup.string().required("Заавал бөглөнө!"),
-  position: yup.string().required("Заавал бөглөнө!"),
-  // password: yup.string().required("Заавал бөглөнө!"),
-  // passwordConfirm: yup
-  //   .string()
-  //   .oneOf([yup.ref("password")], "Нууц үг таарах ёстой!")
-  //   .required("Заавал бөглөнө!"),
+  email: yup.string().required("Заавал бөглөнө!"),
+  registerNo: yup.string().required("Заавал бөглөнө!"),
+  lastName: yup.string().required("Заавал бөглөнө!"),
+  firstName: yup.string().required("Заавал бөглөнө!"),
+  avatar: yup.string().required("Заавал бөглөнө!"),
+  avatarThumbnail: yup.string().required("Заавал бөглөнө!"),
+  password: yup.string().required("Заавал бөглөнө!"),
+  isActive: yup.string().required("Заавал бөглөнө!"),
 });
 
 type Props = {
@@ -46,9 +38,7 @@ export default function EmployeeForm({
   formRef,
   onLoadingStatus,
 }: Props) {
-  const {  position } = useSelector(
-    (state: RootState) => state.general,
-  );
+  const { position } = useSelector((state: RootState) => state.general);
 
   const optionsPosition = position.map((item: any) => ({
     label: item.name,
@@ -56,57 +46,39 @@ export default function EmployeeForm({
   }));
 
   const [data] = React.useState({
-    userType: undefined,
-    registerNo: undefined,
-    firstName: undefined,
-    lastName: undefined,
-    email: undefined,
-    phone: undefined,
-    phoneSecond: undefined,
-    avatar: undefined,
-    gender: undefined,
-    position: undefined,
-    passwordConfirm: payload ? "1234" : undefined,
-    password: payload ? "1234" : undefined,
-    ...(payload && payload),
-    hasPassword: payload!,
+    type: payload?.type || "STAFF",
+    phone: payload?.phone || "88755029",
+    email: payload?.email || "cofinity0@gmail.com", // null
+    registerNo: payload?.registerNo || "СЧ89122911", // null
+    lastName: payload?.lastName || "Соронзонболд", // null
+    firstName: payload?.firstName || "Нямсайхан",
+    avatar: payload?.avatar || "", // null
+    avatarThumbnail: payload?.avatarThumbnail || "", // null
+    password: payload?.password || "@Cof123",
+    isActive: payload?.isActive || true,
   });
 
   const onSubmit = async (values: typeof data) => {
     try {
       onLoadingStatus && onLoadingStatus(true);
 
+      let dataValue = {
+        type: values?.type,
+        phone: values?.phone,
+        email: values?.email,
+        registerNo: values?.registerNo,
+        lastName: values?.lastName,
+        firstName: values?.firstName,
+        avatar: values?.avatar,
+        avatarThumbnail: values?.avatarThumbnail,
+        password: values?.password,
+        isActive: values?.isActive,
+      };
+
       if (payload?._id) {
-        await userApi.update(payload?._id, {
-          userType: "STAFF",
-          registerNo: values.registerNo,
-          firstName: values.firstName,
-          lastName: values.lastName,
-          email: values.email,
-          phone: values.phone,
-          phoneSecond: values.phoneSecond,
-          avatar: values.avatar,
-          gender: values.gender,
-          position: values.position,
-          isActive: true,
-          role: values.role,
-          password: values.password,
-        });
+        await userApi.update(payload?._id, dataValue);
       } else {
-        await userApi.create({
-          userType: "STAFF",
-          registerNo: values.registerNo,
-          firstName: values.firstName,
-          lastName: values.lastName,
-          email: values.email,
-          phone: values.phone,
-          phoneSecond: values.phoneSecond,
-          avatar: values.avatar,
-          gender: values.gender,
-          position: values.position,
-          role: values.role,
-          password: values.password,
-        });
+        await userApi.create(dataValue);
       }
 
       onCancel(true);
@@ -132,109 +104,61 @@ export default function EmployeeForm({
 
         return (
           <SimpleGrid cols={{ base: 1, lg: 2 }}>
-            <SelectField
-              label="Албан тушаал"
-              name="position"
-              placeholder="Албан тушаал"
-              options={optionsPosition}
-              required
-            />
-            {/* <SelectField
-              label="Хандах эрх"
-              name="position"
-              placeholder="Хандах эрх"
-              options={optionsPosition}
-              required
-            /> */}
-
             <TextField
               label="Овог"
               name="lastName"
               placeholder="Овог"
               required
             />
-
             <TextField
               label="Нэр"
               name="firstName"
               placeholder="Нэр"
               required
             />
-
+            <TextField label="type" name="type" placeholder="type" required />
             <TextField
-              label="Регистрийн дугаар"
-              name="registerNo"
-              placeholder="Регистрийн дугаар"
-              required
-            />
-
-            <TextField
-              label="Утасны дугаар 1"
+              label="phone"
               name="phone"
-              placeholder="Утасны дугаар 1"
+              placeholder="phone"
               required
             />
-
             <TextField
-              label="Утасны дугаар 2"
-              name="phoneSecond"
-              placeholder="Утасны дугаар 2"
-            />
-
-            <TextField
-              label="Мэйл хаяг"
+              label="email"
               name="email"
-              placeholder="Мэйл хаяг"
+              placeholder="email"
               required
             />
-
-            <RadioField
-              label="Хүйс"
-              name="gender"
-              options={[
-                {
-                  value: "MALE",
-                  label: "Эрэгтэй",
-                },
-                {
-                  value: "FEMALE",
-                  label: "Эмэгтэй",
-                },
-              ]}
-              placeholder="Хүйс сонгох"
-              children={null}
-              withAsterisk
-            />
-            {/* <SelectField
-              label="Хандах эрх"
-              name="userType"
-              placeholder="Хандах эрх"
-              options={optionsUserType}
+            <TextField
+              label="registerNo"
+              name="registerNo"
+              placeholder="registerNo"
               required
-            /> */}
-
-            {/* <DatePickerField
-              label="Ажилд орсон огноо"
-              name="employmentDate"
-              placeholder="Ажилд орсон огноо"
-            /> */}
-            {!values.hasPassword && (
-              <>
-                <PasswordField
-                  label="Нууц үг"
-                  name="password"
-                  placeholder="Нууц үг"
-                />
-
-                <PasswordField
-                  label="Нууц үг давтах"
-                  name="passwordConfirm"
-                  placeholder="Нууц үг давтах"
-                />
-              </>
-            )}
-
-            <Space h={100} />
+            />
+            <TextField
+              label="avatar"
+              name="avatar"
+              placeholder="Нэр"
+              required
+            />
+            <TextField
+              label="avatarThumbnail"
+              name="avatarThumbnail"
+              placeholder="avatarThumbnail"
+              required
+            />
+            <TextField
+              label="password"
+              name="password"
+              placeholder="password"
+              required
+            />
+            <TextField
+              label="isActive"
+              name="isActive"
+              placeholder="isActive"
+              required
+            />
           </SimpleGrid>
         );
       }}

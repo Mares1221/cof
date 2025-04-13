@@ -1,11 +1,10 @@
 "use client";
 
-import { buildingApi, complexApi } from "@/apis";
+import { buildingApi } from "@/apis";
 import PageLayout from "@/components/layout/page-layout/page-layout";
 import { ActionButton } from "@/components/ui/action-button/page";
 import CoreDrawer from "@/components/ui/drawer/page";
 import { IFormRef } from "@/components/ui/form";
-import { SingleComboboxInput } from "@/components/ui/form/single-combobox-input";
 import {
   ColumnType,
   ITableRef,
@@ -21,8 +20,6 @@ import { useDebouncedValue } from "@mantine/hooks";
 import { openContextModal } from "@mantine/modals";
 import {
   IconDownload,
-  IconHome,
-  IconParking,
   IconPlus,
   IconReload,
   IconSearch,
@@ -119,28 +116,6 @@ export default function BuildingPage() {
             setFilters({ ...filters, query: e.currentTarget.value })
           }
         />
-        <SingleComboboxInput
-          w={200}
-          ref={comboRef}
-          value={filters?.complex || ""}
-          name="apartmentComplex"
-          placeholder="Хотхон"
-          defaultValue={filters?.complex || ""}
-          loadData={async (query) => {
-            const res = await complexApi.list({
-              filter: { query: query },
-              offset: {
-                page: 1,
-                limit: 20,
-              },
-            });
-            return res.rows.map((item: any) => ({
-              label: item?.name,
-              value: item?._id,
-            }));
-          }}
-          onChange={(e: any) => setFilters({ ...filters, complex: e })}
-        />
         <Button
           variant="default"
           leftSection={<IconReload size={18} />}
@@ -219,36 +194,5 @@ const useHeader = ({
         }}
       />
     ),
-  },
-  {
-    title: "Хотхоны нэр",
-    align: "left",
-    render: (record) => record?.apartmentComplex?.name || "-",
-  },
-  {
-    title: "Байрны нэр",
-    align: "left",
-    render: (record) => record?.buildingName || "-",
-  },
-  {
-    title: "Орон сууц",
-    align: "left",
-    render: (record) => record?.totalApartment || "-",
-  },
-  {
-    title: "Орц",
-    align: "left",
-    render: (record) => record?.totalEntrance || "-",
-  },
-
-  {
-    title: "Зогсоол",
-    align: "left",
-    render: (record) => record?.totalParking || "-",
-  },
-  {
-    title: "Агуулах",
-    align: "left",
-    render: (record) => record?.totalWarehouse || "-",
   },
 ];

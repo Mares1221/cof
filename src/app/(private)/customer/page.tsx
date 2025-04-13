@@ -1,8 +1,8 @@
 "use client";
 
-import { complexApi } from "@/apis";
 import PageLayout from "@/components/layout/page-layout/page-layout";
 import { ActionButton } from "@/components/ui/action-button/page";
+import CoreDrawer from "@/components/ui/drawer/page";
 import { IFormRef } from "@/components/ui/form";
 import {
   ColumnType,
@@ -10,34 +10,30 @@ import {
   RowAction,
   Table,
 } from "@/components/ui/table/table";
-import { IComplex } from "@/interfaces/complex";
-import { Complex } from "@/models/complex";
+import { Customer } from "@/models/customer";
 import { errorParse } from "@/utils/errorParse";
 import { message } from "@/utils/message";
-import { Button, Drawer, Group, Text, TextInput } from "@mantine/core";
+import { Button, Group, TextInput } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import { openContextModal } from "@mantine/modals";
-import {
-  IconBuilding,
-  IconDownload,
-  IconHome,
-  IconParking,
-  IconPlus,
-  IconReload,
-  IconSearch,
-} from "@tabler/icons-react";
-import "boxicons/css/boxicons.min.css";
+import { IconPlus, IconReload, IconSearch } from "@tabler/icons-react";
 import { useRef, useState } from "react";
-import ComplexForm from "./form";
+import CustomerForm from "./form";
+import { ICustomer } from "@/interfaces/customer";
+import { customerApi } from "@/apis";
 
 const initialFilters: {
   query: string | null;
+  building: string | null;
+  complex: string | null;
 } = {
+  complex: null,
+  building: null,
   query: null,
 };
 
-export default function ComplexPage() {
-  const [action, setAction] = useState<[boolean, IComplex | null]>([
+export default function EntarncePage() {
+  const [action, setAction] = useState<[boolean, ICustomer | null]>([
     false,
     null,
   ]);
@@ -47,7 +43,7 @@ export default function ComplexPage() {
   const tableRef = useRef<ITableRef>(null);
   const formRef = useRef<IFormRef>(null);
   const columns = useHeader({
-    onClick: (key: any, record: IComplex) => {
+    onClick: (key: any, record: ICustomer) => {
       switch (key) {
         case "edit":
           setAction([true, record]);
@@ -55,12 +51,12 @@ export default function ComplexPage() {
         case "delete":
           openContextModal({
             modal: "confirm",
-            title: "Хотхон устгах",
+            title: "Зар устгах",
             innerProps: {
               children: "Та устгах үйлдэлийг хийхдээ итгэлтэй байна уу",
               onConfirm: async (close: () => void) => {
                 try {
-                  await complexApi.remove(record._id);
+                  await customerApi.remove(record._id);
                   message.success("Хүсэлт амжиллтай");
                   close();
                   tableRef.current?.reload();
@@ -75,39 +71,51 @@ export default function ComplexPage() {
       }
     },
   });
+
+  const comboRefComplex = useRef<{ clear: () => void }>(null);
+  const comboRefBuilding = useRef<{ clear: () => void }>(null);
+
+  const handleClear = () => {
+    if (comboRefComplex.current) {
+      comboRefComplex.current.clear();
+    }
+    if (comboRefBuilding.current) {
+      comboRefBuilding.current.clear();
+    }
+    setFilters(initialFilters);
+  };
   return (
     <PageLayout
-      title="Хотхон"
-      description="Хотхон жагсаалт"
+      title="Зар"
+      description="Зарын жагсаалт, удирдлага"
       breadcrumb={[
         {
-          label: "Хотхон",
-          href: "/complex",
+          label: "Зар",
+          href: "/ad",
         },
       ]}
-      extra={[
-        <Button leftSection={<IconDownload size={18} />} variant="default">
-          Excel болгон татах
-        </Button>,
+      extra={
         <Button
           leftSection={<IconPlus size={18} />}
           onClick={() => setAction([true, null])}
         >
           Нэмэх
-        </Button>,
-      ]}
+        </Button>
+      }
     >
       <Group gap="xs">
         <TextInput
-          placeholder="Хайх"
+          w={250}
           value={filters?.query || ""}
+          maxLength={45}
+          placeholder="Хайх"
           leftSection={<IconSearch size={18} />}
-          onChange={(e) => setFilters({ query: e.currentTarget.value })}
+          onChange={(e) => setFilters({ ...filters, query: e.target.value })}
         />
         <Button
           variant="default"
           leftSection={<IconReload size={18} />}
-          onClick={() => setFilters(initialFilters)}
+          onClick={handleClear}
         >
           Цэвэрлэх
         </Button>
@@ -116,38 +124,45 @@ export default function ComplexPage() {
         limit={15}
         ref={tableRef}
         columns={columns}
-        name="swr.complex.list"
-        loadData={complexApi.list}
+        name="swr.apartment.list"
+        loadData={customerApi.list}
         filters={{
           ...filters,
           query: debounced,
         }}
       />
-      {/* <CoreDrawer
+      <CoreDrawer
         opened={action[0]}
         onClose={() => setAction([false, null])}
-        title={action[1] ? "Хотхон засах" : "Хотхон бүртгэл"}
-        description="Хотхон мэдээлэл бүртгэл"
-      > */}
-      <Drawer
-        opened={action[0]}
-        onClose={() => setAction([false, null])}
-        title={
-          <Text size="md" fw={600}>
-            {" "}
-            {action[1] ? "Хотхон засах" : "Хотхон бүртгэл"}
-          </Text>
-        }
+        title={action[1] ? "Зар засварлах" : "Зар бүртгэх"}
+        description="Зар Мэдээ"
+        extra={[
+          <Button
+            key={1}
+            size="sm"
+            variant="default"
+            onClick={() => setAction([false, null])}
+          >
+            Болих
+          </Button>,
+          <Button
+            key={2}
+            loading={loading}
+            onClick={() => formRef.current?.submit()}
+          >
+            Хадгалах
+          </Button>,
+        ]}
       >
-        <ComplexForm
-          formRef={formRef}
-          onLoadingStatus={setLoading}
-          payload={action[1] || null}
-          onSuccuss={() => {
+        <CustomerForm
+          onSuccess={() => {
             setAction([false, null]), tableRef.current?.reload();
           }}
+          formRef={formRef}
+          payload={action[1] || undefined}
+          onLoadingStatus={setLoading}
         />
-      </Drawer>
+      </CoreDrawer>
     </PageLayout>
   );
 }
@@ -155,8 +170,8 @@ export default function ComplexPage() {
 const useHeader = ({
   onClick,
 }: {
-  onClick: (key: string, record: IComplex) => void;
-}): ColumnType<Complex>[] => [
+  onClick: (key: string, record: ICustomer) => void;
+}): ColumnType<Customer>[] => [
   {
     title: "#",
     width: "1px",
@@ -175,10 +190,5 @@ const useHeader = ({
         }}
       />
     ),
-  },
-  {
-    title: "Хотхоны нэр",
-    align: "left",
-    render: (record) => record?.name || "-",
   },
 ];

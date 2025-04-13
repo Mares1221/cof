@@ -1,6 +1,6 @@
-import { IComplex } from "@/interfaces/complex";
+import { IEntrance } from "@/interfaces/entracne";
 
-export class Complex implements IComplex {
+export class Entrance implements IEntrance {
   _id: string;
   createdBy: string;
   createdAt: string;
@@ -8,14 +8,10 @@ export class Complex implements IComplex {
   updatedAt: string;
   deletedBy: string;
   deletedAt: string;
-  isActive: string;
+  town: string;
+  building: string;
   name: string;
   description: string;
-  image: string;
-  thumbnail: string;
-  isLocated: string;
-  location: string;
-  coordinates: string[];
 
   constructor({
     _id,
@@ -25,15 +21,11 @@ export class Complex implements IComplex {
     updatedAt,
     deletedBy,
     deletedAt,
-    isActive,
+    town,
+    building,
     name,
     description,
-    image,
-    thumbnail,
-    isLocated,
-    location,
-    coordinates,
-  }: IComplex) {
+  }: IEntrance) {
     this._id = _id;
     this.createdBy = createdBy;
     this.createdAt = createdAt;
@@ -41,17 +33,13 @@ export class Complex implements IComplex {
     this.updatedAt = updatedAt;
     this.deletedBy = deletedBy;
     this.deletedAt = deletedAt;
-    this.isActive = isActive;
+    this.town = town;
+    this.building = building;
     this.name = name;
     this.description = description;
-    this.image = image;
-    this.thumbnail = thumbnail;
-    this.isLocated = isLocated;
-    this.location = location;
-    this.coordinates = coordinates;
   }
 
   static fromJson(json: any) {
-    return new Complex(json);
+    return new Entrance(json);
   }
 }

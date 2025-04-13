@@ -1,6 +1,6 @@
-import { IComplex } from "@/interfaces/complex";
+import { ICustomer } from "@/interfaces/customer";
 
-export class Complex implements IComplex {
+export class Customer implements ICustomer {
   _id: string;
   createdBy: string;
   createdAt: string;
@@ -8,14 +8,10 @@ export class Complex implements IComplex {
   updatedAt: string;
   deletedBy: string;
   deletedAt: string;
-  isActive: string;
   name: string;
+  logo: string;
+  logoThumbnail: string;
   description: string;
-  image: string;
-  thumbnail: string;
-  isLocated: string;
-  location: string;
-  coordinates: string[];
 
   constructor({
     _id,
@@ -25,15 +21,11 @@ export class Complex implements IComplex {
     updatedAt,
     deletedBy,
     deletedAt,
-    isActive,
     name,
+    logo,
+    logoThumbnail,
     description,
-    image,
-    thumbnail,
-    isLocated,
-    location,
-    coordinates,
-  }: IComplex) {
+  }: ICustomer) {
     this._id = _id;
     this.createdBy = createdBy;
     this.createdAt = createdAt;
@@ -41,17 +33,13 @@ export class Complex implements IComplex {
     this.updatedAt = updatedAt;
     this.deletedBy = deletedBy;
     this.deletedAt = deletedAt;
-    this.isActive = isActive;
     this.name = name;
+    this.logo = logo;
+    this.logoThumbnail = logoThumbnail;
     this.description = description;
-    this.image = image;
-    this.thumbnail = thumbnail;
-    this.isLocated = isLocated;
-    this.location = location;
-    this.coordinates = coordinates;
   }
 
   static fromJson(json: any) {
-    return new Complex(json);
+    return new Customer(json);
   }
 }

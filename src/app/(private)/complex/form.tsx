@@ -32,10 +32,11 @@ export default function ComplexForm({
 }: Props) {
   const [data] = useState({
     name: payload?.name || undefined,
-    buildingCount: payload?.buildingCount || undefined,
-    totalApartment: payload?.totalApartment || undefined,
-    totalParking: payload?.totalParking || undefined,
-    totalWarehouse: payload?.totalWarehouse || undefined,
+    description: payload?.description || undefined,
+    image: payload?.image || undefined,
+    thumbnail: payload?.thumbnail || undefined,
+    isActive: payload?.isActive || false,
+    coordinates: payload?.coordinates || [47.9016929, 106.8718291],
   });
 
   const onSubmit = async (values: typeof data) => {
@@ -102,7 +103,7 @@ export default function ComplexForm({
               </Grid.Col>
               <Grid.Col span={12}>
                 <Group justify="flex-end" gap="xs">
-                <Button>Хадгалах</Button>
+                  <Button>Хадгалах</Button>
                 </Group>
               </Grid.Col>
             </Grid>
