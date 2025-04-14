@@ -13,7 +13,7 @@ import { ContactIconsList } from "./contact-icons";
 
 export function GetInTouch() {
   return (
-    <Paper shadow="md" radius="lg">
+    <Paper shadow="md" radius="lg" my="xl" mx="15%">
       <div className={classes.wrapper}>
         <div
           className={classes.contacts}

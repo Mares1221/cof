@@ -15,7 +15,7 @@ import { IBuilding } from "@/interfaces/building";
 import { Building } from "@/models/building";
 import { errorParse } from "@/utils/errorParse";
 import { message } from "@/utils/message";
-import { Button, Group, TextInput } from "@mantine/core";
+import { Avatar, Button, Group, TextInput } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import { openContextModal } from "@mantine/modals";
 import {
@@ -26,12 +26,11 @@ import {
 } from "@tabler/icons-react";
 import { useRef, useState } from "react";
 import BuildingForm from "./form";
+import { formatDate } from "@/utils/time-age";
 
 const initialFilters: {
   query: string | null;
-  complex: string | null;
 } = {
-  complex: "",
   query: null,
 };
 
@@ -94,17 +93,14 @@ export default function BuildingPage() {
           href: "/building",
         },
       ]}
-      extra={[
-        <Button leftSection={<IconDownload size={18} />} variant="default">
-          Excel болгон татах
-        </Button>,
+      extra={
         <Button
           leftSection={<IconPlus size={18} />}
           onClick={() => setAction([true, null])}
         >
           Нэмэх
-        </Button>,
-      ]}
+        </Button>
+      }
     >
       <Group gap="xs">
         <TextInput
@@ -195,4 +191,29 @@ const useHeader = ({
       />
     ),
   },
+  {
+    title: "ner",
+    align: "left",
+    width: "1px",
+    render: (record) => record?.name || "-",
+  },
+  {
+    title: "ner",
+    align: "left",
+    width: "1px",
+    render: (record) => <Avatar src={record?.image}/>,
+  },
+  {
+    title: "idewhtei eseh",
+    align: "left",
+    width: "1px",
+    render: (record) => record?.isActive ? "idewhtei" : "idewhgui",
+  },
+  {
+    title: "ognoo",
+    align: "left",
+    width: "1px",
+    render: (record) => formatDate(record?.createdAt) || "-",
+  },
+  
 ];

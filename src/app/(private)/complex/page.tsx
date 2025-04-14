@@ -1,6 +1,6 @@
 "use client";
 
-import { complexApi } from "@/apis";
+import { complexApi, townApi } from "@/apis";
 import PageLayout from "@/components/layout/page-layout/page-layout";
 import { ActionButton } from "@/components/ui/action-button/page";
 import { IFormRef } from "@/components/ui/form";
@@ -117,7 +117,7 @@ export default function ComplexPage() {
         ref={tableRef}
         columns={columns}
         name="swr.complex.list"
-        loadData={complexApi.list}
+        loadData={townApi.list}
         filters={{
           ...filters,
           query: debounced,

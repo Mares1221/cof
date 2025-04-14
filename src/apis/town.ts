@@ -3,10 +3,10 @@ import { Building } from "@/models/building";
 import { Result } from "@/models/result";
 import { HttpRequest } from "@/utils/request";
 
-const httpRequest = new HttpRequest(null, "/api/api");
+const httpRequest = new HttpRequest(null, "/aut/api");
 
 export const list = async (data: any) => {
-  const res = await httpRequest.get("/building", data);
+  const res = await httpRequest.get("/town", data);
 
   return Result.fromJson<IBuilding>({
     rows: res?.rows?.map((row: IBuilding) => Building.fromJson(row)),
@@ -15,17 +15,17 @@ export const list = async (data: any) => {
 };
 
 export const get = async (id: string) => {
-  return httpRequest.get(`/building/${id}`);
+  return httpRequest.get(`/town/${id}`);
 };
 
 export const create = async (data: any) => {
-  return httpRequest.post("/building", data);
+  return httpRequest.post("/town", data);
 };
 
 export const update = async (id: string, data: any) => {
-  return httpRequest.put(`/building/${id}`, data);
+  return httpRequest.put(`/town/${id}`, data);
 };
 
 export const remove = async (id: string) => {
-  return httpRequest.del(`/building/${id}`);
+  return httpRequest.del(`/town/${id}`);
 };

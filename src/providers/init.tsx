@@ -28,11 +28,9 @@ export default function AdminProvider({ children }: Props) {
     async () => {
       const resInit = await generalApi.init();
       const resMe = await authApi.me();
-      const userMe = await authApi.userMe();
       return {
         resInit,
         resMe,
-        userMe,
       };
     },
     {

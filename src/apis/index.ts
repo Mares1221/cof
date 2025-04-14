@@ -9,3 +9,4 @@ export * as roleApi from "./role";
 export * as otpApi from "./otp";
 export * as adApi from "./ad";
 export * as entranceApi from "./entrance";
+export * as townApi from "./town"

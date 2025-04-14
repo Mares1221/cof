@@ -1,9 +1,12 @@
 "use client";
 
-import { complexApi } from "@/apis";
-import { Form, IFormRef } from "@/components/ui/form";
+import { complexApi, townApi } from "@/apis";
+import { Field, Form, IFormRef } from "@/components/ui/form";
 import { NumberField } from "@/components/ui/form/number-field";
+import { SwitchField } from "@/components/ui/form/switch-field";
 import { TextField } from "@/components/ui/form/text-field";
+import { TextareaField } from "@/components/ui/form/textarea-field";
+import { ImageUpload } from "@/components/ui/upload/image-upload";
 import { IComplex } from "@/interfaces/complex";
 import HttpHandler from "@/utils/http/http-handler";
 import { message } from "@/utils/message";
@@ -42,9 +45,9 @@ export default function ComplexForm({
   const onSubmit = async (values: typeof data) => {
     try {
       if (payload) {
-        await complexApi.update(payload._id, values);
+        await townApi.update(payload._id, values);
       } else {
-        await complexApi.create(values);
+        await townApi.create(values);
       }
       message.success("Таны хүсэлт амжилттай.");
       onSuccuss(true);
@@ -62,7 +65,7 @@ export default function ComplexForm({
       initialValues={data}
       validationSchema={FormSchema}
     >
-      {() => {
+      {({setFieldValue}) => {
         return (
           <Stack>
             <Grid>
@@ -74,36 +77,36 @@ export default function ComplexForm({
                 />
               </Grid.Col>
               <Grid.Col span={{ base: 12, md: 6 }}>
-                <NumberField
-                  name="buildingCount"
-                  label="Барилгын тоо"
-                  placeholder="Барилгын тоо"
+                <Field name="image">
+                                 {({ error }) => (
+                                   <ImageUpload
+                                     w="100%"
+                                     h="300px"
+                                     error={error}
+                                     value={payload?.image || ""}
+                                     onChange={(value) => {
+                                       setFieldValue("image", value?._id);
+                                     }}
+                                   />
+                                 )}
+                               </Field>
+              </Grid.Col>
+              <Grid.Col span={{ base: 12, md: 6 }}>
+                <SwitchField
+                  name="isActive"
+                  label="idewhtei eseh"
                 />
               </Grid.Col>
               <Grid.Col span={{ base: 12, md: 6 }}>
-                <NumberField
-                  name="totalApartment"
-                  label="Орон сууц"
-                  placeholder="Орон сууц"
-                />
-              </Grid.Col>
-              <Grid.Col span={{ base: 12, md: 6 }}>
-                <NumberField
-                  name="totalParking"
-                  label="Зогсоол"
-                  placeholder="Зогсоол"
-                />
-              </Grid.Col>
-              <Grid.Col span={{ base: 12, md: 6 }}>
-                <NumberField
-                  name="totalWarehouse"
-                  label="Агуулах"
-                  placeholder="Агуулах"
+                <TextareaField
+                  name="description"
+                  label="Nemelt tai;bar"
+                  placeholder="Nemelt tai;bar"
                 />
               </Grid.Col>
               <Grid.Col span={12}>
                 <Group justify="flex-end" gap="xs">
-                  <Button>Хадгалах</Button>
+                  <Button type="submit">Хадгалах</Button>
                 </Group>
               </Grid.Col>
             </Grid>

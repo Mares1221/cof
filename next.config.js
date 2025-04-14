@@ -4,16 +4,8 @@ const isDevelopment = process.env.NODE_ENV !== "production";
 const rewritesConfig = isDevelopment
   ? [
       {
-        source: "/:path*/aut/:path*",
-        destination: `${process.env.NEXT_PUBLIC_AUTH_API_HOST}/aut/:path*`,
-      },
-      {
-        source: "/:path*/med/:path*",
-        destination: `${process.env.NEXT_PUBLIC_MEDIA_API_HOST}/api/:path*`,
-      },
-      {
         source: "/:path*/api/:path*",
-        destination: `${process.env.NEXT_PUBLIC_APARTMENT_API_HOST}/api/:path*`,
+        destination: `${process.env.NEXT_PUBLIC_AUTH_API_HOST}/api/:path*`,
       },
     ]
   : [];
