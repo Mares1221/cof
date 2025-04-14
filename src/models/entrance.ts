@@ -13,30 +13,18 @@ export class Entrance implements IEntrance {
   name: string;
   description: string;
 
-  constructor({
-    _id,
-    createdBy,
-    createdAt,
-    updatedBy,
-    updatedAt,
-    deletedBy,
-    deletedAt,
-    town,
-    building,
-    name,
-    description,
-  }: IEntrance) {
-    this._id = _id;
-    this.createdBy = createdBy;
-    this.createdAt = createdAt;
-    this.updatedBy = updatedBy;
-    this.updatedAt = updatedAt;
-    this.deletedBy = deletedBy;
-    this.deletedAt = deletedAt;
-    this.town = town;
-    this.building = building;
-    this.name = name;
-    this.description = description;
+  constructor(json: IEntrance) {
+    this._id = json._id;
+    this.createdBy = json.createdBy;
+    this.createdAt = json.createdAt;
+    this.updatedBy = json.updatedBy;
+    this.updatedAt = json.updatedAt;
+    this.deletedBy = json.deletedBy;
+    this.deletedAt = json.deletedAt;
+    this.town = json.town;
+    this.building = json.building;
+    this.name = json.name;
+    this.description = json.description;
   }
 
   static fromJson(json: any) {

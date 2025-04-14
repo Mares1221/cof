@@ -20,44 +20,25 @@ export class User implements IUser {
   avatarThumbnail: string;
   password: string;
 
-  constructor({
-    _id,
-    createdBy,
-    createdAt,
-    updatedBy,
-    updatedAt,
-    deletedBy,
-    deletedAt,
-    isActive,
-    type,
-    username,
-    phone,
-    email,
-    registerNo,
-    lastName,
-    firstName,
-    avatar,
-    avatarThumbnail,
-    password,
-  }: IUser) {
-    this._id = _id;
-    this.createdBy = createdBy;
-    this.createdAt = createdAt;
-    this.updatedBy = updatedBy;
-    this.updatedAt = updatedAt;
-    this.deletedBy = deletedBy;
-    this.deletedAt = deletedAt;
-    this.isActive = isActive;
-    this.type = type;
-    this.username = username;
-    this.phone = phone;
-    this.email = email;
-    this.registerNo = registerNo;
-    this.lastName = lastName;
-    this.firstName = firstName;
-    this.avatar = avatar;
-    this.avatarThumbnail = avatarThumbnail;
-    this.password = password;
+  constructor(json: IUser) {
+    this._id = json._id;
+    this.createdBy = json.createdBy;
+    this.createdAt = json.createdAt;
+    this.updatedBy = json.updatedBy;
+    this.updatedAt = json.updatedAt;
+    this.deletedBy = json.deletedBy;
+    this.deletedAt = json.deletedAt;
+    this.isActive = json.isActive;
+    this.type = json.type;
+    this.username = json.username;
+    this.phone = json.phone;
+    this.email = json.email;
+    this.registerNo = json.registerNo;
+    this.lastName = json.lastName;
+    this.firstName = json.firstName;
+    this.avatar = json.avatar;
+    this.avatarThumbnail = json.avatarThumbnail;
+    this.password = json.password;
   }
 
   static fromJson(json: any) {

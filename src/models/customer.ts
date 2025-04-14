@@ -13,30 +13,18 @@ export class Customer implements ICustomer {
   logoThumbnail: string;
   description: string;
 
-  constructor({
-    _id,
-    createdBy,
-    createdAt,
-    updatedBy,
-    updatedAt,
-    deletedBy,
-    deletedAt,
-    name,
-    logo,
-    logoThumbnail,
-    description,
-  }: ICustomer) {
-    this._id = _id;
-    this.createdBy = createdBy;
-    this.createdAt = createdAt;
-    this.updatedBy = updatedBy;
-    this.updatedAt = updatedAt;
-    this.deletedBy = deletedBy;
-    this.deletedAt = deletedAt;
-    this.name = name;
-    this.logo = logo;
-    this.logoThumbnail = logoThumbnail;
-    this.description = description;
+  constructor(json: ICustomer) {
+    this._id = json._id;
+    this.createdBy = json.createdBy;
+    this.createdAt = json.createdAt;
+    this.updatedBy = json.updatedBy;
+    this.updatedAt = json.updatedAt;
+    this.deletedBy = json.deletedBy;
+    this.deletedAt = json.deletedAt;
+    this.name = json.name;
+    this.logo = json.logo;
+    this.logoThumbnail = json.logoThumbnail;
+    this.description = json.description;
   }
 
   static fromJson(json: any) {

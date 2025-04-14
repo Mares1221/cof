@@ -20,40 +20,23 @@ export class Apartment implements IApartment {
   _id: string;
   index: number;
 
-  constructor({
-    apartmentComplex,
-    apartmentSize,
-    building,
-    category,
-    createdAt,
-    customer,
-    deletedAt,
-    description,
-    doorNumber,
-    entranceNumber,
-    file,
-    floorNumber,
-    updatedAt,
-    __v,
-    _id,
-    index,
-  }: IApartment) {
-    this.apartmentComplex = apartmentComplex;
-    this.apartmentSize = apartmentSize;
-    this.building = building;
-    this.category = category;
-    this.createdAt = createdAt;
-    this.customer = customer;
-    this.deletedAt = deletedAt;
-    this.description = description;
-    this.doorNumber = doorNumber;
-    this.entranceNumber = entranceNumber;
-    this.file = file;
-    this.floorNumber = floorNumber;
-    this.updatedAt = updatedAt;
-    this.__v = __v;
-    this._id = _id;
-    this.index = index;
+  constructor(json: IApartment) {
+    this.apartmentComplex = json.apartmentComplex;
+    this.apartmentSize = json.apartmentSize;
+    this.building = json.building;
+    this.category = json.category;
+    this.createdAt = json.createdAt;
+    this.customer = json.customer;
+    this.deletedAt = json.deletedAt;
+    this.description = json.description;
+    this.doorNumber = json.doorNumber;
+    this.entranceNumber = json.entranceNumber;
+    this.file = json.file;
+    this.floorNumber = json.floorNumber;
+    this.updatedAt = json.updatedAt;
+    this.__v = json.__v;
+    this._id = json._id;
+    this.index = json.index;
   }
 
   static fromJson(json: any) {

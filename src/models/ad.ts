@@ -29,54 +29,30 @@ export class Ad implements IAd {
   boards: string;
   queryStr: string;
 
-  constructor({
-    _id,
-    createdBy,
-    createdAt,
-    updatedBy,
-    updatedAt,
-    deletedBy,
-    deletedAt,
-    isActive,
-    image,
-    thumbnail,
-    customer,
-    durationType,
-    duration,
-    startAt,
-    endAt,
-    startedAt,
-    endedAt,
-    description,
-    towns,
-    buildings,
-    entrances,
-    boards,
-    queryStr,
-  }: IAd) {
-    this._id = _id;
-    this.createdBy = createdBy;
-    this.createdAt = createdAt;
-    this.updatedBy = updatedBy;
-    this.updatedAt = updatedAt;
-    this.deletedBy = deletedBy;
-    this.deletedAt = deletedAt;
-    this.isActive = isActive;
-    this.image = image;
-    this.thumbnail = thumbnail;
-    this.customer = customer;
-    this.durationType = durationType;
-    this.duration = duration;
-    this.startAt = startAt;
-    this.endAt = endAt;
-    this.startedAt = startedAt;
-    this.endedAt = endedAt;
-    this.description = description;
-    this.towns = towns;
-    this.buildings = buildings;
-    this.entrances = entrances;
-    this.boards = boards;
-    this.queryStr = queryStr;
+  constructor(json: IAd) {
+    this._id = json._id;
+    this.createdBy = json.createdBy;
+    this.createdAt = json.createdAt;
+    this.updatedBy = json.updatedBy;
+    this.updatedAt = json.updatedAt;
+    this.deletedBy = json.deletedBy;
+    this.deletedAt = json.deletedAt;
+    this.isActive = json.isActive;
+    this.image = json.image;
+    this.thumbnail = json.thumbnail;
+    this.customer = json.customer;
+    this.durationType = json.durationType;
+    this.duration = json.duration;
+    this.startAt = json.startAt;
+    this.endAt = json.endAt;
+    this.startedAt = json.startedAt;
+    this.endedAt = json.endedAt;
+    this.description = json.description;
+    this.towns = json.towns;
+    this.buildings = json.buildings;
+    this.entrances = json.entrances;
+    this.boards = json.boards;
+    this.queryStr = json.queryStr;
   }
 
   static fromJson(json: any) {

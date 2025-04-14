@@ -17,38 +17,22 @@ export class Complex implements IComplex {
   location: string;
   coordinates: string[];
 
-  constructor({
-    _id,
-    createdBy,
-    createdAt,
-    updatedBy,
-    updatedAt,
-    deletedBy,
-    deletedAt,
-    isActive,
-    name,
-    description,
-    image,
-    thumbnail,
-    isLocated,
-    location,
-    coordinates,
-  }: IComplex) {
-    this._id = _id;
-    this.createdBy = createdBy;
-    this.createdAt = createdAt;
-    this.updatedBy = updatedBy;
-    this.updatedAt = updatedAt;
-    this.deletedBy = deletedBy;
-    this.deletedAt = deletedAt;
-    this.isActive = isActive;
-    this.name = name;
-    this.description = description;
-    this.image = image;
-    this.thumbnail = thumbnail;
-    this.isLocated = isLocated;
-    this.location = location;
-    this.coordinates = coordinates;
+  constructor(json: IComplex) {
+    this._id = json._id;
+    this.createdBy = json.createdBy;
+    this.createdAt = json.createdAt;
+    this.updatedBy = json.updatedBy;
+    this.updatedAt = json.updatedAt;
+    this.deletedBy = json.deletedBy;
+    this.deletedAt = json.deletedAt;
+    this.isActive = json.isActive;
+    this.name = json.name;
+    this.description = json.description;
+    this.image = json.image;
+    this.thumbnail = json.thumbnail;
+    this.isLocated = json.isLocated;
+    this.location = json.location;
+    this.coordinates = json.coordinates;
   }
 
   static fromJson(json: any) {

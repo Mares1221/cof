@@ -13,30 +13,18 @@ export class Avatar implements IAvatar {
   __v: string;
   _id: string;
 
-  constructor({
-    createdAt,
-    createdBy,
-    height,
-    rotation,
-    thumbnail,
-    updatedAt,
-    url,
-    user,
-    width,
-    __v,
-    _id,
-  }: IAvatar) {
-    this.createdAt = createdAt;
-    this.createdBy = createdBy;
-    this.height = height;
-    this.rotation = rotation;
-    this.thumbnail = thumbnail;
-    this.updatedAt = updatedAt;
-    this.url = url;
-    this.user = user;
-    this.width = width;
-    this.__v = __v;
-    this._id = _id;
+  constructor(json: IAvatar) {
+    this.createdAt = json.createdAt;
+    this.createdBy = json.createdBy;
+    this.height = json.height;
+    this.rotation = json.rotation;
+    this.thumbnail = json.thumbnail;
+    this.updatedAt = json.updatedAt;
+    this.url = json.url;
+    this.user = json.user;
+    this.width = json.width;
+    this.__v = json.__v;
+    this._id = json._id;
   }
 
   static fromJson(json: any) {
