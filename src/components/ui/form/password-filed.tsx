@@ -13,6 +13,8 @@ export function PasswordField({ name, label, ...rest }: PasswordFieldProps) {
   return (
     <PasswordInput
       {...rest}
+      radius="xl"
+      variant="filled"
       label={label}
       error={error}
       value={value}

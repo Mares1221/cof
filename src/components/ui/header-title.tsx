@@ -1,6 +1,6 @@
 "use client";
 
-import { Divider, Flex, Text } from "@mantine/core";
+import { Flex, Text } from "@mantine/core";
 
 function HeaderTitle({
   title,
@@ -10,18 +10,14 @@ function HeaderTitle({
   description: string;
 }) {
   return (
-    <Flex gap={10} align="center" justify="flex-center" mb={20}>
-      <Flex gap={10} align="center" justify="flex-center">
-        asdas
-        <Divider orientation="vertical" size="sm" />
-        <Flex direction="column">
-          <Text size="md" fw={600} c="black">
-            {title}
-          </Text>
-          <Text size="xs" c="dimmed">
-            {description}
-          </Text>
-        </Flex>
+    <Flex gap={10} align="center" justify="flex-center" mb={20} ml="xs">
+      <Flex direction="column">
+        <Text size="md" fw={600} c="black">
+          {title}
+        </Text>
+        <Text size="xs" c="dimmed">
+          {description}
+        </Text>
       </Flex>
     </Flex>
   );

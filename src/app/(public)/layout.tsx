@@ -6,7 +6,6 @@ export default function PrivateLayout({
   return (
     <div
       style={{
-        // background: "#F5F5F5",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}

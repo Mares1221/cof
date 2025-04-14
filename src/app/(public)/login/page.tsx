@@ -28,7 +28,6 @@ function LoginPage() {
   const [data] = useState({
     username: "",
     password: "",
-    provider: "ZTO-HOA",
   });
   const [loading, setLoading] = React.useState<boolean>(false);
 
@@ -48,8 +47,8 @@ function LoginPage() {
 
   return (
     <Flex h="100vh" align="center" justify="center">
-      <Card padding="lg" style={{ width: 320 }}>
-        <HeaderTitle title="Мандуул Сөх" description="Нэвтрэх хэсэг" />
+      <Card padding="lg" style={{ width: 320 }} withBorder>
+        <HeaderTitle title="Самбар" description="Нэвтрэх хэсэг" />
         <Form
           initialValues={data}
           onSubmit={onSubmit}
@@ -65,7 +64,13 @@ function LoginPage() {
                   <PasswordField name="password" placeholder="Нууц үг" />
                 </Grid.Col>
                 <Grid.Col span={12}>
-                  <Button size="sm" type="submit" fullWidth loading={loading}>
+                  <Button
+                    size="sm"
+                    type="submit"
+                    fullWidth
+                    loading={loading}
+                    radius="xl"
+                  >
                     Нэвтрэх
                   </Button>
                 </Grid.Col>

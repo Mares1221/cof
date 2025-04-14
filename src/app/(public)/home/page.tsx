@@ -1,34 +1,23 @@
 "use client";
 
-import HeaderTitle from "@/components/ui/header-title";
 import { HeaderTabs } from "@/components/ui/header/page";
+import { HeroBullets } from "@/components/ui/hero-bullet/page";
+import MapBox from "@/components/ui/map-truck/page";
 import { formatCurrency } from "@/utils/currency";
 import {
   BackgroundImage,
   Card,
   Container,
   Image,
-  SegmentedControl,
   SimpleGrid,
   Stack,
   Text,
   Title,
 } from "@mantine/core";
-import { useRouter } from "next/navigation";
 import Footer from "../footer/page";
-import MapBox from "@/components/ui/map-truck/page";
+import { GetInTouch } from "@/components/ui/contact/page";
 
 export default function HomePage() {
-  const router = useRouter();
-
-  const navLinks = [
-    { label: "Home", href: "/" },
-    { label: "Archive", href: "/archive" },
-    { label: "Category", href: "/category" },
-    { label: "Pages", href: "/pages" },
-    { label: "Contact", href: "/contact" },
-  ];
-
   const cards = [
     {
       image: "https://cdnus.globalso.com/sytonkiosk/yre.jpg",
@@ -84,7 +73,9 @@ export default function HomePage() {
         </Container>
       </BackgroundImage>
 
-      <Container size="lg" style={{ padding: "40px 0" }}>
+      <HeroBullets />
+
+      <Container size="lg" style={{ padding: "40px 0" }} mb="xl">
         <Title ta="center">Самбарын төрөл</Title>
         <SimpleGrid cols={3} spacing="lg">
           {cards.map((card, index) => (
@@ -136,6 +127,7 @@ export default function HomePage() {
           ]}
         />
       </Stack>
+      <GetInTouch />
       <Footer />
     </>
   );
