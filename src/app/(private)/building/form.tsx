@@ -1,37 +1,28 @@
 "use client";
 
 import { buildingApi } from "@/apis";
-import { Form, IFormRef } from "@/components/ui/form";
+import { Field, Form } from "@/components/ui/form";
+import { SwitchField } from "@/components/ui/form/switch-field";
 import { TextField } from "@/components/ui/form/text-field";
+import { ImageUpload } from "@/components/ui/upload/image-upload";
 import { IBuilding } from "@/interfaces/building";
 import HttpHandler from "@/utils/http/http-handler";
 import { message } from "@/utils/message";
-import { Grid, Stack } from "@mantine/core";
+import { Button, Grid, Group, Stack } from "@mantine/core";
 import { useState } from "react";
 import * as yup from "yup";
 
 const FormSchema = yup.object({
   town: yup.string().required("Заавал бөглөнө!"),
   name: yup.string().required("Заавал бөглөнө!"),
-  description: yup.string().required("Заавал бөглөнө!"),
-  image: yup.string().required("Заавал бөглөнө!"),
-  thumbnail: yup.string().required("Заавал бөглөнө!"),
-  isActive: yup.string().required("Заавал бөглөнө!"),
-  coordinates: yup.string().required("Заавал бөглөнө!"),
 });
 
 type Props = {
   payload?: IBuilding;
-  formRef: React.Ref<IFormRef>;
   onSuccuss: (reload?: boolean) => void;
-  onLoadingStatus?: (loading: boolean) => void;
 };
-export default function BuildingForm({
-  payload,
-  formRef,
-  onSuccuss,
-  onLoadingStatus,
-}: Props) {
+export default function BuildingForm({ payload, onSuccuss }: Props) {
+  const [loading, setLoading] = useState<boolean>(false);
   const [data] = useState({
     town: payload?.town || undefined,
     name: payload?.name || undefined,
@@ -43,6 +34,7 @@ export default function BuildingForm({
   });
 
   const onSubmit = async (values: typeof data) => {
+    setLoading(true);
     try {
       if (payload) {
         await buildingApi.update(payload._id, values);
@@ -54,50 +46,65 @@ export default function BuildingForm({
     } catch (err) {
       message.error((err as HttpHandler)?.message!);
     } finally {
-      onLoadingStatus && onLoadingStatus(false);
+      setLoading(false);
     }
   };
 
   return (
     <Form
-      ref={formRef}
       onSubmit={onSubmit}
       initialValues={data}
       validationSchema={FormSchema}
     >
-      {() => {
+      {({ setFieldValue }) => {
         return (
           <Stack>
             <Grid>
               <Grid.Col span={{ base: 12, md: 6 }}>
-                <TextField name="town" label="town" placeholder="town" />
+                <TextField name="town" label="Байр" placeholder="Байр" />
               </Grid.Col>
               <Grid.Col span={{ base: 12, md: 6 }}>
-                <TextField name="name" label="name" placeholder="name" />
+                <TextField name="name" label="Нэр" placeholder="Нэр" />
               </Grid.Col>
               <Grid.Col span={{ base: 12, md: 6 }}>
                 <TextField
                   name="description"
-                  label="description"
-                  placeholder="description"
+                  label="Нэмэлт тайлбар"
+                  placeholder="Нэмэлт тайлбар"
                 />
               </Grid.Col>
               <Grid.Col span={{ base: 12, md: 6 }}>
-                <TextField name="image" label="image" placeholder="image" />
+                <Field name="image">
+                  {({ error }) => (
+                    <ImageUpload
+                      w="100%"
+                      h="300px"
+                      error={error}
+                      value={payload?.image || ""}
+                      onChange={(value) => {
+                        setFieldValue("image", value?.url);
+                      }}
+                    />
+                  )}
+                </Field>
               </Grid.Col>
               <Grid.Col span={{ base: 12, md: 6 }}>
-                <TextField
-                  name="thumbnail"
-                  label="thumbnail"
-                  placeholder="thumbnail"
-                />
+                <Field name="thumbnail">
+                  {({ error }) => (
+                    <ImageUpload
+                      w="100%"
+                      h="300px"
+                      error={error}
+                      value={payload?.thumbnail || ""}
+                      onChange={(value) => {
+                        setFieldValue("thumbnail", value?.url);
+                      }}
+                    />
+                  )}
+                </Field>
               </Grid.Col>
               <Grid.Col span={{ base: 12, md: 6 }}>
-                <TextField
-                  name="isActive"
-                  label="isActive"
-                  placeholder="isActive"
-                />
+                <SwitchField name="isActive" label="Идэвхтэй эсэх" />
               </Grid.Col>
               <Grid.Col span={{ base: 12, md: 6 }}>
                 <TextField
@@ -107,6 +114,11 @@ export default function BuildingForm({
                 />
               </Grid.Col>
             </Grid>
+            <Group justify="flex-end" gap="xs">
+              <Button type="submit" loading={loading}>
+                Хадгалах
+              </Button>
+            </Group>
           </Stack>
         );
       }}

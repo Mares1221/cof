@@ -3,8 +3,6 @@
 import { buildingApi } from "@/apis";
 import PageLayout from "@/components/layout/page-layout/page-layout";
 import { ActionButton } from "@/components/ui/action-button/page";
-import CoreDrawer from "@/components/ui/drawer/page";
-import { IFormRef } from "@/components/ui/form";
 import {
   ColumnType,
   ITableRef,
@@ -15,18 +13,13 @@ import { IBuilding } from "@/interfaces/building";
 import { Building } from "@/models/building";
 import { errorParse } from "@/utils/errorParse";
 import { message } from "@/utils/message";
-import { Avatar, Button, Group, TextInput } from "@mantine/core";
+import { formatDate } from "@/utils/time-age";
+import { Avatar, Badge, Button, Drawer, TextInput, Text } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import { openContextModal } from "@mantine/modals";
-import {
-  IconDownload,
-  IconPlus,
-  IconReload,
-  IconSearch,
-} from "@tabler/icons-react";
+import { IconPlus, IconSearch } from "@tabler/icons-react";
 import { useRef, useState } from "react";
 import BuildingForm from "./form";
-import { formatDate } from "@/utils/time-age";
 
 const initialFilters: {
   query: string | null;
@@ -41,9 +34,7 @@ export default function BuildingPage() {
   ]);
   const [filters, setFilters] = useState(initialFilters);
   const [debounced] = useDebouncedValue(filters.query, 300);
-  const [loading, setLoading] = useState(false);
   const tableRef = useRef<ITableRef>(null);
-  const formRef = useRef<IFormRef>(null);
   const columns = useHeader({
     onClick: (key: any, record: any) => {
       switch (key) {
@@ -74,15 +65,6 @@ export default function BuildingPage() {
     },
   });
 
-  const comboRef = useRef<{ clear: () => void }>(null);
-
-  const handleClear = () => {
-    setFilters(initialFilters);
-    if (comboRef.current) {
-      comboRef.current.clear();
-    }
-  };
-
   return (
     <PageLayout
       title="Байр"
@@ -102,24 +84,15 @@ export default function BuildingPage() {
         </Button>
       }
     >
-      <Group gap="xs">
-        <TextInput
-          w={250}
-          placeholder="Хайх"
-          value={filters?.query || ""}
-          leftSection={<IconSearch size={18} />}
-          onChange={(e) =>
-            setFilters({ ...filters, query: e.currentTarget.value })
-          }
-        />
-        <Button
-          variant="default"
-          leftSection={<IconReload size={18} />}
-          onClick={handleClear}
-        >
-          Цэвэрлэх
-        </Button>
-      </Group>
+      <TextInput
+        w={250}
+        placeholder="Хайх"
+        value={filters?.query || ""}
+        leftSection={<IconSearch size={18} />}
+        onChange={(e) =>
+          setFilters({ ...filters, query: e.currentTarget.value })
+        }
+      />
       <Table
         limit={15}
         ref={tableRef}
@@ -131,38 +104,22 @@ export default function BuildingPage() {
           query: debounced,
         }}
       />
-      <CoreDrawer
+      <Drawer
         opened={action[0]}
-        description="Байрны мэдээлэл бүртгэл"
         onClose={() => setAction([false, null])}
-        title={action[1] ? "Байрны бүртгэл засах" : "Байрны бүртгэл"}
-        extra={[
-          <Button
-            key={1}
-            size="sm"
-            variant="default"
-            onClick={() => setAction([false, null])}
-          >
-            Болих
-          </Button>,
-          <Button
-            key={2}
-            loading={loading}
-            onClick={() => formRef.current?.submit()}
-          >
-            Хадгалах
-          </Button>,
-        ]}
+        title={
+          <Text size="md" fw={600}>
+            {action[1] ? "Байрны бүртгэл засах" : "Байрны бүртгэл"}
+          </Text>
+        }
       >
         <BuildingForm
-          formRef={formRef}
-          onLoadingStatus={setLoading}
           payload={action[1] || undefined}
           onSuccuss={() => {
             setAction([false, null]), tableRef.current?.reload();
           }}
         />
-      </CoreDrawer>
+      </Drawer>
     </PageLayout>
   );
 }
@@ -192,28 +149,31 @@ const useHeader = ({
     ),
   },
   {
-    title: "ner",
+    title: "Нэр",
     align: "left",
     width: "1px",
     render: (record) => record?.name || "-",
   },
   {
-    title: "ner",
+    title: "Зураг",
     align: "left",
     width: "1px",
-    render: (record) => <Avatar src={record?.image}/>,
+    render: (record) => <Avatar src={record?.image} />,
   },
   {
-    title: "idewhtei eseh",
+    title: "Идэвхтэй эсэх",
     align: "left",
     width: "1px",
-    render: (record) => record?.isActive ? "idewhtei" : "idewhgui",
+    render: (record) => (
+      <Badge variant="dot" color={record?.isActive ? "green" : "red"}>
+        {record?.isActive ? "Идэвхтэй" : "Идэвхгүй"}
+      </Badge>
+    ),
   },
   {
-    title: "ognoo",
+    title: "Огноо",
     align: "left",
     width: "1px",
     render: (record) => formatDate(record?.createdAt) || "-",
   },
-  
 ];

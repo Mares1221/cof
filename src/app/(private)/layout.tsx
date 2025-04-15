@@ -24,7 +24,6 @@ export default function PrivateLayout({
           width: 270,
           breakpoint: "lg",
           collapsed: { mobile: !opened },
-          // collapsed: { mobile: isHeader ? true : false },
         }}
         header={{ height: isHeader ? 70 : 0 }}
         className="navigation"

@@ -13,30 +13,19 @@ import { IUser } from "@/interfaces/user";
 import { ErrorMessage } from "@/utils/http/http-handler";
 import { message } from "@/utils/message";
 import { formatDateTime } from "@/utils/time-age";
-import { Button, Group, Select, TextInput } from "@mantine/core";
+import { Button, Drawer, Text, TextInput } from "@mantine/core";
 import { openContextModal } from "@mantine/modals";
-import { IconPlus, IconReload, IconSearch } from "@tabler/icons-react";
-import { useRouter } from "next/navigation";
+import { IconPlus, IconSearch } from "@tabler/icons-react";
 import React, { useRef, useState } from "react";
-import EditEmployees from "./edit";
-import NewEmployees from "./new";
+import UserForm from "./form";
 
-export default function EmployeesPage() {
-  const router = useRouter();
+export default function UserPage() {
   const tableRef = useRef<ITableRef>(null);
   const [action, setAction] = useState<any[]>([]);
 
   const [filters, setFilters] = React.useState<any>({
     query: "",
-    category: undefined,
-    tag: undefined,
-    status: undefined,
   });
-
-  function onCancel() {
-    setAction([]);
-    tableRef.current?.reload();
-  }
 
   const columns = useHeader({
     onClick: (key: any, record: IUser) => {
@@ -47,7 +36,7 @@ export default function EmployeesPage() {
         case "remove":
           openContextModal({
             modal: "confirm",
-            title: "Баталгаажуулах",
+            title: "Устгах",
             innerProps: {
               children: "Та үүнийг устгахдаа итгэлтэй байна уу?",
               onConfirm: async (close: () => void) => {
@@ -89,19 +78,12 @@ export default function EmployeesPage() {
         </Button>
       }
     >
-      <Group gap="xs">
-        <TextInput
-          w={250}
-          placeholder="Ажилтан хайх"
-          maxLength={45}
-          leftSection={<IconSearch size={18} />}
-        />
-        <Select placeholder="Агуулах" searchable withCheckIcon={false} />
-        <Button variant="default" leftSection={<IconReload size={18} />}>
-          Цэвэрлэх
-        </Button>
-      </Group>
-
+      <TextInput
+        w={250}
+        placeholder="Ажилтан хайх"
+        maxLength={45}
+        leftSection={<IconSearch size={18} />}
+      />
       <Table
         ref={tableRef}
         filters={{ ...filters, userType: "STAFF" }}
@@ -110,13 +92,22 @@ export default function EmployeesPage() {
         loadData={userApi.list}
         name="swr.user.table"
       />
-
-      <NewEmployees onCancel={onCancel} opened={action[0] === "new"} />
-      <EditEmployees
-        onCancel={onCancel}
-        opened={action[0] === "edit" && action[1]}
-        payload={action[1] && action[1]}
-      />
+      <Drawer
+        opened={action[0]}
+        onClose={() => setAction([false, null])}
+        title={
+          <Text size="md" fw={600}>
+            {action[1] ? "Байрны бүртгэл засах" : "Байрны бүртгэл"}
+          </Text>
+        }
+      >
+        <UserForm
+          payload={action[1] || undefined}
+          onSuccuss={() => {
+            setAction([false, null]), tableRef.current?.reload();
+          }}
+        />
+      </Drawer>
     </PageLayout>
   );
 }

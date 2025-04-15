@@ -7,6 +7,10 @@ const rewritesConfig = isDevelopment
         source: "/:path*/api/:path*",
         destination: `${process.env.NEXT_PUBLIC_AUTH_API_HOST}/api/:path*`,
       },
+      // {
+      //   source: "/rest/:path*",
+      //   destination: `${process.env.NEXT_PUBLIC_GATE_API_HOST}/:path*`,
+      // },
     ]
   : [];
 

@@ -1,5 +1,5 @@
 {
-  "name" : "hoa-admin",
+  "name" : "lift-ad",
   "script" : "npx next start",
   "env_production" : {
     "PORT": 30610

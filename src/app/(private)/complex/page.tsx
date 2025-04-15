@@ -3,7 +3,6 @@
 import { complexApi, townApi } from "@/apis";
 import PageLayout from "@/components/layout/page-layout/page-layout";
 import { ActionButton } from "@/components/ui/action-button/page";
-import { IFormRef } from "@/components/ui/form";
 import {
   ColumnType,
   ITableRef,
@@ -14,18 +13,10 @@ import { IComplex } from "@/interfaces/complex";
 import { Complex } from "@/models/complex";
 import { errorParse } from "@/utils/errorParse";
 import { message } from "@/utils/message";
-import { Button, Drawer, Group, Text, TextInput } from "@mantine/core";
+import { Button, Drawer, Text, TextInput } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import { openContextModal } from "@mantine/modals";
-import {
-  IconBuilding,
-  IconDownload,
-  IconHome,
-  IconParking,
-  IconPlus,
-  IconReload,
-  IconSearch,
-} from "@tabler/icons-react";
+import { IconDownload, IconPlus, IconSearch } from "@tabler/icons-react";
 import "boxicons/css/boxicons.min.css";
 import { useRef, useState } from "react";
 import ComplexForm from "./form";
@@ -43,9 +34,7 @@ export default function ComplexPage() {
   ]);
   const [filters, setFilters] = useState(initialFilters);
   const [debounced] = useDebouncedValue(filters.query, 300);
-  const [loading, setLoading] = useState(false);
   const tableRef = useRef<ITableRef>(null);
-  const formRef = useRef<IFormRef>(null);
   const columns = useHeader({
     onClick: (key: any, record: IComplex) => {
       switch (key) {
@@ -97,21 +86,12 @@ export default function ComplexPage() {
         </Button>,
       ]}
     >
-      <Group gap="xs">
-        <TextInput
-          placeholder="Хайх"
-          value={filters?.query || ""}
-          leftSection={<IconSearch size={18} />}
-          onChange={(e) => setFilters({ query: e.currentTarget.value })}
-        />
-        <Button
-          variant="default"
-          leftSection={<IconReload size={18} />}
-          onClick={() => setFilters(initialFilters)}
-        >
-          Цэвэрлэх
-        </Button>
-      </Group>
+      <TextInput
+        placeholder="Хайх"
+        value={filters?.query || ""}
+        leftSection={<IconSearch size={18} />}
+        onChange={(e) => setFilters({ query: e.currentTarget.value })}
+      />
       <Table
         limit={15}
         ref={tableRef}
@@ -123,25 +103,16 @@ export default function ComplexPage() {
           query: debounced,
         }}
       />
-      {/* <CoreDrawer
-        opened={action[0]}
-        onClose={() => setAction([false, null])}
-        title={action[1] ? "Хотхон засах" : "Хотхон бүртгэл"}
-        description="Хотхон мэдээлэл бүртгэл"
-      > */}
       <Drawer
         opened={action[0]}
         onClose={() => setAction([false, null])}
         title={
           <Text size="md" fw={600}>
-            {" "}
             {action[1] ? "Хотхон засах" : "Хотхон бүртгэл"}
           </Text>
         }
       >
         <ComplexForm
-          formRef={formRef}
-          onLoadingStatus={setLoading}
           payload={action[1] || null}
           onSuccuss={() => {
             setAction([false, null]), tableRef.current?.reload();

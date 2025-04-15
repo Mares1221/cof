@@ -1,24 +1,20 @@
 "use client";
 
 import { adApi } from "@/apis";
-import { Field, Form, IFormRef } from "@/components/ui/form";
+import { Field, Form } from "@/components/ui/form";
 import { DatePickerField } from "@/components/ui/form/datepicker-field";
 import { NumberField } from "@/components/ui/form/number-field";
 import { SelectField } from "@/components/ui/form/select-field";
-import { TextField } from "@/components/ui/form/text-field";
 import { TextareaField } from "@/components/ui/form/textarea-field";
 import { ImageUpload } from "@/components/ui/upload/image-upload";
 import { IAd } from "@/interfaces/ad";
 import HttpHandler from "@/utils/http/http-handler";
 import { message } from "@/utils/message";
-import { Grid, Stack } from "@mantine/core";
+import { Button, Grid, Group, Stack } from "@mantine/core";
 import { useState } from "react";
 import * as yup from "yup";
 
 const FormSchema = yup.object({
-  image: yup.string().required("Заавал бөглөнө!"),
-  thumbnail: yup.string().required("Заавал бөглөнө!"),
-  customer: yup.string().required("Заавал бөглөнө!"),
   durationType: yup.string().required("Заавал бөглөнө!"),
   duration: yup.string().required("Заавал бөглөнө!"),
   startAt: yup.string().required("Заавал бөглөнө!"),
@@ -28,16 +24,10 @@ const FormSchema = yup.object({
 
 type Props = {
   payload?: IAd;
-  formRef: React.Ref<IFormRef>;
   onSuccess: (reload?: boolean) => void;
-  onLoadingStatus?: (loading: boolean) => void;
 };
-export default function AdForm({
-  payload,
-  formRef,
-  onSuccess,
-  onLoadingStatus,
-}: Props) {
+export default function AdForm({ payload, onSuccess }: Props) {
+  const [loading, setLoading] = useState<boolean>(false);
   const [data] = useState({
     image: payload?.image || undefined,
     thumbnail: payload?.thumbnail || undefined,
@@ -50,6 +40,7 @@ export default function AdForm({
   });
 
   const onSubmit = async (values: typeof data) => {
+    setLoading(true);
     try {
       if (payload) {
         await adApi.update(payload._id, values);
@@ -61,18 +52,17 @@ export default function AdForm({
     } catch (err) {
       message.error((err as HttpHandler)?.message!);
     } finally {
-      onLoadingStatus && onLoadingStatus(false);
+      setLoading(false);
     }
   };
 
   return (
     <Form
-      ref={formRef}
       onSubmit={onSubmit}
       initialValues={data}
       validationSchema={FormSchema}
     >
-      {({ values, setFieldValue }) => {
+      {({ setFieldValue }) => {
         return (
           <Stack>
             <Grid>
@@ -92,11 +82,19 @@ export default function AdForm({
                 </Field>
               </Grid.Col>
               <Grid.Col span={{ base: 12, md: 6 }}>
-                <TextField
-                  name="thumbnail"
-                  label="thumbnail"
-                  placeholder="thumbnail"
-                />
+                <Field name="thumbnail">
+                  {({ error }) => (
+                    <ImageUpload
+                      w="100%"
+                      h="300px"
+                      error={error}
+                      value={payload?.thumbnail || ""}
+                      onChange={(value) => {
+                        setFieldValue("thumbnail", value?._id);
+                      }}
+                    />
+                  )}
+                </Field>
               </Grid.Col>
               <Grid.Col span={{ base: 12, md: 6 }}>
                 <NumberField
@@ -108,11 +106,11 @@ export default function AdForm({
               <Grid.Col span={{ base: 12, md: 6 }}>
                 <SelectField
                   name="durationType"
-                  label="durationType"
-                  placeholder="durationType"
+                  label="Хугацаа"
+                  placeholder="Хугацаа"
                   options={[
-                    { label: "day", value: "day" },
-                    { label: "month", value: "month" },
+                    { label: "Өдөр", value: "day" },
+                    { label: "Сар", value: "month" },
                   ]}
                 />
               </Grid.Col>
@@ -126,8 +124,8 @@ export default function AdForm({
               <Grid.Col span={{ base: 12, md: 6 }}>
                 <DatePickerField
                   name="startAt"
-                  label="startAt"
-                  placeholder="startAt"
+                  label="Эхлэх өдөр"
+                  placeholder="Эхлэх өдөр"
                 />
               </Grid.Col>
               <Grid.Col span={12}>
@@ -140,11 +138,16 @@ export default function AdForm({
               <Grid.Col span={{ base: 12, md: 6 }}>
                 <NumberField
                   name="boards"
-                  label="boards"
-                  placeholder="boards"
+                  label="Самбарууд"
+                  placeholder="Самбарууд"
                 />
               </Grid.Col>
             </Grid>
+            <Group justify="flex-end" gap="xs">
+              <Button type="submit" loading={loading}>
+                Хадгалах
+              </Button>
+            </Group>
           </Stack>
         );
       }}

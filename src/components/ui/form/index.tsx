@@ -37,7 +37,7 @@ const validate = (
   values: IValues,
   toucheds: IToucheds,
   validationSchema: IValidationSchema,
-  callback: (errors: IErrors) => void,
+  callback: (errors: IErrors) => void
 ) => {
   const data = serializeData(values);
 
@@ -66,7 +66,7 @@ const validate = (
             [path]: currentError.message,
           };
         },
-        {},
+        {}
       );
 
       callback(errors);
@@ -88,7 +88,7 @@ const FormContext = createContext<IContextProps>({
 const deserializeObject = (
   payload: IValues,
   fieldName: string,
-  value: IValue,
+  value: IValue
 ) => {
   return Object.keys(payload || {}).reduce((accumulator, key) => {
     let reduces = accumulator;
@@ -106,7 +106,7 @@ const deserializeObject = (
 
           return reduces;
         },
-        reduces,
+        reduces
       );
     } else if (typeof payload[key] === "object") {
       reduces = deserializeObject(payload[key], `${fieldName + key}.`, value);
@@ -149,7 +149,7 @@ const serializeObject = (fields: string[], payload: IValues, value: IValue) => {
     reduces[field][index] = serializeObject(
       array,
       reduces[field][index],
-      value,
+      value
     );
 
     return reduces;
@@ -178,7 +178,7 @@ const serializeData = (data: IValues) => {
 export function useDebouncedState<T = IValues>(
   defaultValue: T,
   wait: number,
-  options = { leading: false },
+  options = { leading: false }
 ) {
   const [value, setValue] = useState(defaultValue);
   const timeoutRef = useRef<number | null>(null);
@@ -200,7 +200,7 @@ export function useDebouncedState<T = IValues>(
       }
       leadingRef.current = false;
     },
-    [options.leading],
+    [options.leading]
   );
 
   return [value, debouncedSetValue] as const;
@@ -210,7 +210,7 @@ export const useField = (name: string, isArray = false) => {
   const { handleChange, errors, initialValues, forceChanges } =
     useContext(FormContext);
   const [value, setValue] = useState<IValue>(
-    isArray ? serializeData(initialValues)[name] : initialValues[name],
+    isArray ? serializeData(initialValues)[name] : initialValues[name]
   );
 
   const onChange = (value: IValue) => {
@@ -288,13 +288,13 @@ const Form = forwardRef(
       onSubmit,
       children,
     }: Props,
-    ref: React.Ref<IFormRef>,
+    ref: React.Ref<IFormRef>
   ) => {
     const formRef = useRef(null);
     const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
     const [initialValues, setInitialValues] = useDebouncedState<IValues>(
       deserializeData(_initialValues),
-      50,
+      50
     );
     const [forceChanges, setForceChanges] = useState<IValues>({});
     const [errors, setErrors] = useDebouncedState({}, 50);
@@ -316,17 +316,6 @@ const Form = forwardRef(
         if (value === "false") {
           return false;
         }
-
-        // const isNumeric = (value: string) => {
-        //   return /^-?\d+$/.test(value);
-        // };
-
-        // if (isNumeric(value)) {
-        //   const intValue = parseInt(value, 10);
-        //   const floatValue = parseFloat(value);
-
-        //   return intValue === floatValue ? intValue : floatValue;
-        // }
 
         return value;
       };
@@ -356,7 +345,7 @@ const Form = forwardRef(
               ...acc,
               [iter]: true,
             }),
-            {},
+            {}
           );
 
           validate(getValues(), touched, validationSchema || {}, (errors) => {
@@ -373,7 +362,7 @@ const Form = forwardRef(
     }));
 
     const handleSubmit = (
-      e?: FormEvent<HTMLFormElement>,
+      e?: FormEvent<HTMLFormElement>
     ): Promise<IValues | null> => {
       e?.preventDefault();
 
@@ -387,7 +376,7 @@ const Form = forwardRef(
           ...acc,
           [iter]: true,
         }),
-        {},
+        {}
       );
 
       return new Promise((resolve) => {
@@ -430,20 +419,6 @@ const Form = forwardRef(
         }
       });
 
-      // if (inputRefs?.current[name] && (typeof value === "string" || typeof value === "number")) {
-      //   const formData = new FormData(formRef?.current!);
-
-      //   formData.set(name, String(value));
-
-      //   inputRefs.current[name].value = String(value);
-      // } else {
-      //   const formData = new FormData(formRef?.current!);
-
-      //   Object.keys(value).forEach(key => {
-      //     formData.delete(key);
-      //   });
-      // }
-
       setInitialValues({ ...values, ...deserialize });
 
       validate(
@@ -452,7 +427,7 @@ const Form = forwardRef(
         validationSchema || {},
         (errors) => {
           setErrors((state) => ({ ...state, [name]: errors[name] }));
-        },
+        }
       );
     };
 
@@ -479,7 +454,7 @@ const Form = forwardRef(
         validationSchema || {},
         (errors) => {
           setErrors((state) => ({ ...state, [name]: errors[name] }));
-        },
+        }
       );
     };
 
@@ -542,78 +517,9 @@ const Form = forwardRef(
         </form>
       </FormContext.Provider>
     );
-  },
+  }
 );
 
 Form.displayName = "Form";
 
 export { Form };
-
-// console.log(
-//   "serializeData: ",
-//   serializeData({
-//     "profile.name": undefined,
-//     "profile.age": undefined,
-//     "works[0].name": undefined,
-//     "works[1].name": undefined,
-//     "works[3].sector.name": undefined,
-//     "fields[0].values[0]": "a",
-//     "fields[0].values[1]": "b",
-//     "fieldValues[0].a": 10,
-//     "fieldValues[1].b": 10,
-//     "fieldValues[2].c": 10,
-//     "fieldValues[3].d": 10,
-//     "fieldValues[4].e": 10,
-//     "detects[0]": "A",
-//     "detects[1]": "B",
-//     "detects[2]": undefined,
-//     "detects[3]": undefined,
-//     "detects[4]": undefined,
-//   }),
-// );
-
-// console.log(
-//   "deserializeData: ",
-//   deserializeData({
-//     profile: {
-//       name: undefined,
-//       age: undefined,
-//     },
-//     works: [
-//       {
-//         name: undefined,
-//       },
-//       {
-//         name: undefined,
-//       },
-//       {
-//         sector: {
-//           name: undefined,
-//         },
-//       },
-//     ],
-//     fields: [
-//       {
-//         values: ["a", "b", undefined, undefined],
-//       },
-//     ],
-//     fieldValues: [
-//       {
-//         a: "10",
-//       },
-//       {
-//         b: "10",
-//       },
-//       {
-//         c: "10",
-//       },
-//       {
-//         d: "10",
-//       },
-//       {
-//         e: "10",
-//       },
-//     ],
-//     detects: ["A", "B", undefined, undefined, undefined],
-//   }),
-// );

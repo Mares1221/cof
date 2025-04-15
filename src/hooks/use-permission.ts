@@ -10,7 +10,7 @@ export const usePermission = () => {
       isRead?: boolean,
       isWrite?: boolean,
       isRemove?: boolean,
-      isExport?: boolean,
+      isExport?: boolean
     ) => {
       const permission = perm?.find((perm) => perm.code === code);
 

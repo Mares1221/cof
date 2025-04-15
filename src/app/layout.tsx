@@ -9,7 +9,7 @@ import "@mantine/core/styles.css";
 import ConfirmModal from "@/components/modals/confirm";
 
 export const metadata = {
-  title: "HOA-Admin",
+  title: "lift-ad",
   description: "ORDER",
 };
 

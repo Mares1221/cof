@@ -6,7 +6,7 @@ import {
   IconChartBar,
   IconDoor,
   IconHome,
-  IconSettings,
+  IconScale,
   IconUser,
 } from "@tabler/icons-react";
 import { LinksGroup } from "./navbar-link-group";
@@ -68,18 +68,18 @@ export function Navbar({ opened, toggle }: any) {
       condition: permissions.entrance,
     },
     {
+      label: "Зар",
+      icon: IconScale,
+      link: "/ad",
+      initiallyOpened: true,
+      condition: permissions.entrance,
+    },
+    {
       label: "Ажилтан",
       icon: IconUser,
       link: "/staff",
       initiallyOpened: true,
       condition: permissions.staff,
-    },
-    {
-      label: "Хандах эрх",
-      icon: IconSettings,
-      link: "/role",
-      initiallyOpened: true,
-      condition: permissions.role,
     },
   ];
   const links = menuConfig.map((item, index) => (

@@ -1,14 +1,13 @@
 "use client";
 
 import { entranceApi } from "@/apis";
-import { Form, IFormRef } from "@/components/ui/form";
-import { NumberField } from "@/components/ui/form/number-field";
+import { Form } from "@/components/ui/form";
 import { TextField } from "@/components/ui/form/text-field";
 import { TextareaField } from "@/components/ui/form/textarea-field";
 import { IEntrance } from "@/interfaces/entracne";
 import HttpHandler from "@/utils/http/http-handler";
 import { message } from "@/utils/message";
-import { Grid, Stack } from "@mantine/core";
+import { Button, Grid, Group, Stack } from "@mantine/core";
 import { useState } from "react";
 import * as yup from "yup";
 
@@ -20,16 +19,10 @@ const FormSchema = yup.object({
 
 type Props = {
   payload?: IEntrance;
-  formRef: React.Ref<IFormRef>;
   onSuccess: (reload?: boolean) => void;
-  onLoadingStatus?: (loading: boolean) => void;
 };
-export default function EntranceForm({
-  payload,
-  formRef,
-  onSuccess,
-  onLoadingStatus,
-}: Props) {
+export default function EntranceForm({ payload, onSuccess }: Props) {
+  const [loading, setLoading] = useState(false);
   const [data] = useState({
     building: payload?.building || undefined,
     name: payload?.name || undefined,
@@ -37,6 +30,7 @@ export default function EntranceForm({
   });
 
   const onSubmit = async (values: typeof data) => {
+    setLoading(true);
     try {
       if (payload) {
         await entranceApi.update(payload._id, values);
@@ -48,30 +42,25 @@ export default function EntranceForm({
     } catch (err) {
       message.error((err as HttpHandler)?.message!);
     } finally {
-      onLoadingStatus && onLoadingStatus(false);
+      setLoading(false);
     }
   };
 
   return (
     <Form
-      ref={formRef}
       onSubmit={onSubmit}
       initialValues={data}
       validationSchema={FormSchema}
     >
-      {({ values, setFieldValue }) => {
+      {() => {
         return (
           <Stack>
             <Grid>
               <Grid.Col span={{ base: 12, md: 6 }}>
-                <TextField
-                  name="building"
-                  label="building"
-                  placeholder="building"
-                />
+                <TextField name="building" label="Байр" placeholder="Байр" />
               </Grid.Col>
               <Grid.Col span={{ base: 12, md: 6 }}>
-                <NumberField name="name" label="name" placeholder="name" />
+                <TextField name="name" label="Нэр" placeholder="Нэр" />
               </Grid.Col>
               <Grid.Col span={12}>
                 <TextareaField
@@ -81,6 +70,11 @@ export default function EntranceForm({
                 />
               </Grid.Col>
             </Grid>
+            <Group justify="flex-end" gap="xs">
+              <Button type="submit" loading={loading}>
+                Хадгалах
+              </Button>
+            </Group>
           </Stack>
         );
       }}

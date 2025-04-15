@@ -3,8 +3,6 @@
 import { adApi } from "@/apis";
 import PageLayout from "@/components/layout/page-layout/page-layout";
 import { ActionButton } from "@/components/ui/action-button/page";
-import CoreDrawer from "@/components/ui/drawer/page";
-import { IFormRef } from "@/components/ui/form";
 import {
   ColumnType,
   ITableRef,
@@ -15,20 +13,16 @@ import { IAd } from "@/interfaces/ad";
 import { Ad } from "@/models/ad";
 import { errorParse } from "@/utils/errorParse";
 import { message } from "@/utils/message";
-import { Button, Group, TextInput } from "@mantine/core";
+import { Button, Drawer, TextInput, Text } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import { openContextModal } from "@mantine/modals";
-import { IconPlus, IconReload, IconSearch } from "@tabler/icons-react";
+import { IconPlus, IconSearch } from "@tabler/icons-react";
 import { useRef, useState } from "react";
 import AdForm from "./form";
 
 const initialFilters: {
   query: string | null;
-  building: string | null;
-  complex: string | null;
 } = {
-  complex: null,
-  building: null,
   query: null,
 };
 
@@ -36,9 +30,7 @@ export default function AdPage() {
   const [action, setAction] = useState<[boolean, IAd | null]>([false, null]);
   const [filters, setFilters] = useState(initialFilters);
   const [debounced] = useDebouncedValue(filters.query, 300);
-  const [loading, setLoading] = useState(false);
   const tableRef = useRef<ITableRef>(null);
-  const formRef = useRef<IFormRef>(null);
   const columns = useHeader({
     onClick: (key: any, record: IAd) => {
       switch (key) {
@@ -69,18 +61,6 @@ export default function AdPage() {
     },
   });
 
-  const comboRefComplex = useRef<{ clear: () => void }>(null);
-  const comboRefBuilding = useRef<{ clear: () => void }>(null);
-
-  const handleClear = () => {
-    if (comboRefComplex.current) {
-      comboRefComplex.current.clear();
-    }
-    if (comboRefBuilding.current) {
-      comboRefBuilding.current.clear();
-    }
-    setFilters(initialFilters);
-  };
   return (
     <PageLayout
       title="Зар"
@@ -100,23 +80,14 @@ export default function AdPage() {
         </Button>
       }
     >
-      <Group gap="xs">
-        <TextInput
-          w={250}
-          value={filters?.query || ""}
-          maxLength={45}
-          placeholder="Хайх"
-          leftSection={<IconSearch size={18} />}
-          onChange={(e) => setFilters({ ...filters, query: e.target.value })}
-        />
-        <Button
-          variant="default"
-          leftSection={<IconReload size={18} />}
-          onClick={handleClear}
-        >
-          Цэвэрлэх
-        </Button>
-      </Group>
+      <TextInput
+        w={250}
+        value={filters?.query || ""}
+        maxLength={45}
+        placeholder="Хайх"
+        leftSection={<IconSearch size={18} />}
+        onChange={(e) => setFilters({ ...filters, query: e.target.value })}
+      />
       <Table
         limit={15}
         ref={tableRef}
@@ -128,38 +99,22 @@ export default function AdPage() {
           query: debounced,
         }}
       />
-      <CoreDrawer
+      <Drawer
         opened={action[0]}
         onClose={() => setAction([false, null])}
-        title={action[1] ? "Зар засварлах" : "Зар бүртгэх"}
-        description="Зар харьяалагдах Зар"
-        extra={[
-          <Button
-            key={1}
-            size="sm"
-            variant="default"
-            onClick={() => setAction([false, null])}
-          >
-            Болих
-          </Button>,
-          <Button
-            key={2}
-            loading={loading}
-            onClick={() => formRef.current?.submit()}
-          >
-            Хадгалах
-          </Button>,
-        ]}
+        title={
+          <Text size="md" fw={600}>
+            {action[1] ? "Зар засварлах" : "Зар бүртгэх"}
+          </Text>
+        }
       >
         <AdForm
+          payload={action[1] || undefined}
           onSuccess={() => {
             setAction([false, null]), tableRef.current?.reload();
           }}
-          formRef={formRef}
-          payload={action[1] || undefined}
-          onLoadingStatus={setLoading}
         />
-      </CoreDrawer>
+      </Drawer>
     </PageLayout>
   );
 }

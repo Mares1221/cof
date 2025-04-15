@@ -15,20 +15,13 @@ export class Role implements IRole {
     isExport: boolean;
   }[];
 
-  constructor({
-    _id,
-    name,
-    description,
-    createdAt,
-    updatedAt,
-    permissions,
-  }: IRole) {
-    this._id = _id;
-    this.name = name;
-    this.description = description;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
-    this.permissions = permissions;
+  constructor(json: IRole) {
+    this._id = json._id;
+    this.name = json.name;
+    this.description = json.description;
+    this.createdAt = json.createdAt;
+    this.updatedAt = json.updatedAt;
+    this.permissions = json.permissions;
   }
 
   static fromJson(json: any) {
