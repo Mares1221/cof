@@ -8,6 +8,7 @@ import {
   BackgroundImage,
   Card,
   Container,
+  Group,
   Image,
   SimpleGrid,
   Stack,
@@ -16,6 +17,7 @@ import {
 } from "@mantine/core";
 import Footer from "../footer/page";
 import { GetInTouch } from "@/components/ui/contact/page";
+import { useMediaQuery } from "@mantine/hooks";
 
 export default function HomePage() {
   const cards = [
@@ -40,6 +42,8 @@ export default function HomePage() {
       date: 75000,
     },
   ];
+  const isMobile = useMediaQuery("(max-width: 1200px)");
+  const isMobileSmall = useMediaQuery("(max-width: 700px)");
 
   return (
     <>
@@ -62,20 +66,21 @@ export default function HomePage() {
           <Title order={1} c="white" style={{ fontSize: 48, margin: "10px 0" }}>
             Бид хэн бэ?
           </Title>
-          <Text
-            size="lg"
-            color="white"
-            style={{ maxWidth: 600, margin: "0 auto" }}
-          >
+          <Text size="lg" c="white" style={{ maxWidth: 600, margin: "0 auto" }}>
             Бид таны амьдралыг илүү хялбар, тав тухтай болгохын төлөө ажилладаг
             баг юм. Манай үйлчилгээ танд хамгийн сайн туршлагыг өгөхийг зорьдог.
           </Text>
         </Container>
       </BackgroundImage>
-
-      <HeroBullets />
-
-      <Container size="lg" style={{ padding: "40px 0" }} mb="xl">
+      <Group mx={isMobile ? "5%" : isMobileSmall ? "3%" : "8%"}>
+        <HeroBullets />
+      </Group>
+      <Container
+        mb="xl"
+        size="lg"
+        style={{ padding: "40px 0" }}
+        mx={isMobile ? "5%" : isMobileSmall ? "3%" : "8%"}
+      >
         <Title ta="center">Самбарын төрөл</Title>
         <SimpleGrid cols={3} spacing="lg">
           {cards.map((card, index) => (
@@ -96,7 +101,11 @@ export default function HomePage() {
           ))}
         </SimpleGrid>
       </Container>
-      <Stack align="center" h={"70vh"}>
+      <Stack
+        align="center"
+        h={"70vh"}
+        mx={isMobile ? "5%" : isMobileSmall ? "3%" : "8%"}
+      >
         <Title>Самбар байршуулах боломжит газарууд</Title>
         <MapBox
           coordinates={[
@@ -127,7 +136,9 @@ export default function HomePage() {
           ]}
         />
       </Stack>
-      <GetInTouch />
+      <Group mx={isMobile ? "5%" : isMobileSmall ? "3%" : "8%"}>
+        <GetInTouch />
+      </Group>
       <Footer />
     </>
   );

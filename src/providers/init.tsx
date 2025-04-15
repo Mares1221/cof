@@ -39,11 +39,11 @@ export default function AdminProvider({ children }: Props) {
         if (err.statusCode === 401) {
           message.error("Та хандах эрхгүй байна!");
           dispatch(logout());
-          push("/login");
+          push("/home");
         }
         return err;
       },
-    },
+    }
   );
 
   const state = {};
@@ -56,14 +56,14 @@ export default function AdminProvider({ children }: Props) {
 
   useEffect(() => {
     if (!accessToken && !isClient) {
-      if (pathname !== "/login") {
-        push("/login");
+      if (pathname !== "/home") {
+        push("/home");
       }
     }
   }, [accessToken, push, isClient]);
 
   if (error) {
-    push("/login");
+    push("/home");
   }
 
   if (!isClient || !data) {

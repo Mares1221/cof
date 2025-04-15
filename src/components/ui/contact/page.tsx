@@ -13,14 +13,14 @@ import { ContactIconsList } from "./contact-icons";
 
 export function GetInTouch() {
   return (
-    <Paper shadow="md" radius="lg" my="xl" mx="15%">
+    <Paper shadow="md" radius="lg" my="xl" w="100%">
       <div className={classes.wrapper}>
         <div
           className={classes.contacts}
           style={{ backgroundImage: `url(${bg.src})` }}
         >
           <Text fz="lg" fw={700} className={classes.title} c="#fff">
-            Contact information
+            Холбоо барихыг хүсвэл
           </Text>
 
           <ContactIconsList />
@@ -31,31 +31,31 @@ export function GetInTouch() {
           onSubmit={(event) => event.preventDefault()}
         >
           <Text fz="lg" fw={700} className={classes.title}>
-            Get in touch
+            Та илүү дэлгэрэнгүй мэдээлэл авах бол доорх мэдээлэлийг бөглөнө үү
           </Text>
 
           <div className={classes.fields}>
             <SimpleGrid cols={{ base: 1, sm: 2 }}>
-              <TextInput label="Your name" placeholder="Your name" />
+              <TextInput label="Нэр" placeholder="Нэр" />
               <TextInput
-                label="Your email"
+                label="Цахим хаяг"
                 placeholder="hello@mantine.dev"
                 required
               />
             </SimpleGrid>
 
-            <TextInput mt="md" label="Subject" placeholder="Subject" required />
+            <TextInput mt="md" label="Утас" placeholder="Утас" required />
 
             <Textarea
               mt="md"
-              label="Your message"
+              label="Нэмэлт мэдээлэл"
               placeholder="Please include all relevant information"
               minRows={3}
             />
 
             <Group justify="flex-end" mt="md">
               <Button type="submit" className={classes.control}>
-                Send message
+                Илгээх
               </Button>
             </Group>
           </div>
