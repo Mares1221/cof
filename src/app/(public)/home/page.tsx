@@ -1,23 +1,10 @@
 "use client";
 
 import { HeaderTabs } from "@/components/ui/header/page";
-import { HeroBullets } from "@/components/ui/hero-bullet/page";
 import MapBox from "@/components/ui/map-truck/page";
-import { formatCurrency } from "@/utils/currency";
-import {
-  BackgroundImage,
-  Card,
-  Container,
-  Group,
-  Image,
-  SimpleGrid,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
-import Footer from "../footer/page";
-import { GetInTouch } from "@/components/ui/contact/page";
+import { Stack, Title } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
+import Footer from "../footer/page";
 
 export default function HomePage() {
   const cards = [
@@ -48,59 +35,6 @@ export default function HomePage() {
   return (
     <>
       <HeaderTabs />
-      <BackgroundImage
-        src="https://greatergo.org/uploads/article/63ab00ab-f707-4b23-b389-96b04b22552a.jpg"
-        style={{
-          height: "60vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        <Container size="lg" style={{ textAlign: "center" }}>
-          <Text size="md" color="white">
-            Бидний тухай
-          </Text>
-          <Title order={1} c="white" style={{ fontSize: 48, margin: "10px 0" }}>
-            Бид хэн бэ?
-          </Title>
-          <Text size="lg" c="white" style={{ maxWidth: 600, margin: "0 auto" }}>
-            Бид таны амьдралыг илүү хялбар, тав тухтай болгохын төлөө ажилладаг
-            баг юм. Манай үйлчилгээ танд хамгийн сайн туршлагыг өгөхийг зорьдог.
-          </Text>
-        </Container>
-      </BackgroundImage>
-      <Group mx={isMobile ? "5%" : isMobileSmall ? "3%" : "8%"}>
-        <HeroBullets />
-      </Group>
-      <Container
-        mb="xl"
-        size="lg"
-        style={{ padding: "40px 0" }}
-        mx={isMobile ? "5%" : isMobileSmall ? "3%" : "8%"}
-      >
-        <Title ta="center">Самбарын төрөл</Title>
-        <SimpleGrid cols={3} spacing="lg">
-          {cards.map((card, index) => (
-            <Card key={index} shadow="sm" padding="lg" radius="md" withBorder>
-              <Card.Section>
-                <Image src={card.image} height={160} alt={card.title} />
-              </Card.Section>
-              <Title order={4} mt="xs">
-                {card.title}
-              </Title>
-              <Text size="sm" c="dimmed" mt="xs">
-                {card.category}
-              </Text>
-              <Text size="sm" fw={600}>
-                {formatCurrency(card.date)}
-              </Text>
-            </Card>
-          ))}
-        </SimpleGrid>
-      </Container>
       <Stack
         align="center"
         h={"70vh"}
@@ -136,9 +70,6 @@ export default function HomePage() {
           ]}
         />
       </Stack>
-      <Group mx={isMobile ? "5%" : isMobileSmall ? "3%" : "8%"}>
-        <GetInTouch />
-      </Group>
       <Footer />
     </>
   );

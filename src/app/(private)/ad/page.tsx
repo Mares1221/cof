@@ -13,12 +13,13 @@ import { IAd } from "@/interfaces/ad";
 import { Ad } from "@/models/ad";
 import { errorParse } from "@/utils/errorParse";
 import { message } from "@/utils/message";
-import { Button, Drawer, TextInput, Text } from "@mantine/core";
+import { Button, Drawer, TextInput, Text, Avatar, Badge } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import { openContextModal } from "@mantine/modals";
 import { IconPlus, IconSearch } from "@tabler/icons-react";
 import { useRef, useState } from "react";
 import AdForm from "./form";
+import { formatDate } from "@/utils/time-age";
 
 const initialFilters: {
   query: string | null;
@@ -142,5 +143,34 @@ const useHeader = ({
         }}
       />
     ),
+  },
+  {
+    title: "Зураг",
+    align: "left",
+    render: (record) => <Avatar src={record?.image} />,
+  },
+  // {
+  //   title: "Нэр",
+  //   align: "left",
+  //   render: (record) => record?.towns || "-",
+  // },
+  {
+    title: "Нэмэлт мэдээлэл",
+    align: "left",
+    render: (record) => record?.description || "-",
+  },
+  {
+    title: "Идэвхтэй эсэх",
+    align: "left",
+    render: (record) => (
+      <Badge variant="dot" color={record?.isActive ? "green" : "red"}>
+        {record?.isActive ? "Идэвхтэй" : "Идэвхгүй"}
+      </Badge>
+    ),
+  },
+  {
+    title: "Огноо",
+    align: "left",
+    render: (record) => formatDate(record?.createdAt) || "-",
   },
 ];

@@ -7,10 +7,7 @@ export function HeaderTabs() {
   return (
     <div className={classes.header}>
       <Container className={classes.mainSection} size="md">
-        <Group justify="space-between">
-          Logo
-          <Button onClick={() => router.push("/login")}>Нэвтрэх</Button>
-        </Group>
+        <Group justify="space-between">Logo</Group>
       </Container>
     </div>
   );

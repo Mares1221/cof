@@ -59,14 +59,24 @@ export default function ComplexForm({ payload, onSuccuss }: Props) {
         return (
           <Stack>
             <Grid>
-              <Grid.Col span={{ base: 12, md: 6 }}>
+              <Grid.Col span={12}>
                 <TextField
                   name="name"
                   label="Хотхоны нэр"
                   placeholder="Хотхоны нэр"
                 />
               </Grid.Col>
-              <Grid.Col span={{ base: 12, md: 6 }}>
+              <Grid.Col span={12}>
+                <TextareaField
+                  name="description"
+                  label="Нэмэлт тайлбар"
+                  placeholder="Нэмэлт тайлбар"
+                />
+              </Grid.Col>
+              <Grid.Col span={12}>
+                <SwitchField name="isActive" label="Идэвхтэй эсэх" />
+              </Grid.Col>
+              <Grid.Col span={12}>
                 <Field name="image">
                   {({ error }) => (
                     <ImageUpload
@@ -75,21 +85,11 @@ export default function ComplexForm({ payload, onSuccuss }: Props) {
                       error={error}
                       value={payload?.image || ""}
                       onChange={(value) => {
-                        setFieldValue("image", value?._id);
+                        setFieldValue("image", value?.image);
                       }}
                     />
                   )}
                 </Field>
-              </Grid.Col>
-              <Grid.Col span={{ base: 12, md: 6 }}>
-                <SwitchField name="isActive" label="Идэвхтэй эсэх" />
-              </Grid.Col>
-              <Grid.Col span={{ base: 12, md: 6 }}>
-                <TextareaField
-                  name="description"
-                  label="Нэмэлт тайлбар"
-                  placeholder="Нэмэлт тайлбар"
-                />
               </Grid.Col>
             </Grid>
             <Group justify="flex-end" gap="xs">
