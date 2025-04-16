@@ -246,11 +246,11 @@ function TableFn(
                       <IconDatabaseOff
                         size={33}
                         stroke={1.6}
-                        color="var(--mantine-color-blue-4)"
+                        color="var(--mantine-color-dark-4)"
                       />
                       <Text
                         style={(theme) => ({
-                          color: "var(--mantine-color-blue-6)",
+                          color: "var(--mantine-color-dark-6)",
                         })}
                         w={500}
                         fz="md"

@@ -1,3 +1,5 @@
+import { IBuilding } from "@/interfaces/building";
+import { IComplex } from "@/interfaces/complex";
 import { IEntrance } from "@/interfaces/entracne";
 
 export class Entrance implements IEntrance {
@@ -8,8 +10,8 @@ export class Entrance implements IEntrance {
   updatedAt: string;
   deletedBy: string;
   deletedAt: string;
-  town: string;
-  building: string;
+  town: IComplex;
+  building: IBuilding;
   name: string;
   description: string;
 

@@ -74,13 +74,13 @@ export function Navbar({ opened, toggle }: any) {
       initiallyOpened: true,
       condition: permissions.entrance,
     },
-    {
-      label: "Ажилтан",
-      icon: IconUser,
-      link: "/staff",
-      initiallyOpened: true,
-      condition: permissions.staff,
-    },
+    // {
+    //   label: "Ажилтан",
+    //   icon: IconUser,
+    //   link: "/staff",
+    //   initiallyOpened: true,
+    //   condition: permissions.staff,
+    // },
   ];
   const links = menuConfig.map((item, index) => (
     <LinksGroup {...item} key={index} opened={opened} toggle={toggle} />
@@ -92,7 +92,7 @@ export function Navbar({ opened, toggle }: any) {
         <div className={classes.header}>
           <Group gap="xs">
             <Text fw={600} size="25px">
-              interlock
+              САМБАР
             </Text>
           </Group>
         </div>

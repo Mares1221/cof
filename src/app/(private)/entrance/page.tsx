@@ -19,6 +19,7 @@ import { openContextModal } from "@mantine/modals";
 import { IconPlus, IconSearch } from "@tabler/icons-react";
 import { useRef, useState } from "react";
 import EntranceForm from "./form";
+import { formatDate } from "@/utils/time-age";
 
 const initialFilters: {
   query: string | null;
@@ -145,5 +146,30 @@ const useHeader = ({
         }}
       />
     ),
+  },
+  {
+    title: "Хотхон",
+    align: "left",
+    render: (record) => record?.town?.name || "-",
+  },
+  {
+    title: "Байр",
+    align: "left",
+    render: (record) => record?.building?.name || "-",
+  },
+  {
+    title: "Орцны дугаар",
+    align: "left",
+    render: (record) => record?.name || "-",
+  },
+  {
+    title: "Тайлбар",
+    align: "left",
+    render: (record) => record?.description || "-",
+  },
+  {
+    title: "Огноо",
+    align: "left",
+    render: (record) => formatDate(record?.createdAt) || "-",
   },
 ];
