@@ -275,7 +275,7 @@ function TableFn(
                 value={currentPage}
                 onChange={(nextPage) => setPage(nextPage)}
                 total={data.count / limit + (data.count % limit > 0 ? 1 : 0)}
-                color="blue"
+                color="black"
               />
             </div>
           ) : null}

@@ -1,52 +1,52 @@
-.tab {
+.inner {
+  display: flex;
+  justify-content: space-between;
+  padding-top: calc(var(--mantine-spacing-xl) * 4);
+  padding-bottom: calc(var(--mantine-spacing-xl) * 4);
+}
+
+.content {
+  max-width: 480px;
+  margin-right: calc(var(--mantine-spacing-xl) * 3);
+
+  @media (max-width: $mantine-breakpoint-md) {
+    max-width: 100%;
+    margin-right: 0;
+  }
+}
+
+.title {
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+  font-family:
+    Greycliff CF,
+    var(--mantine-font-family);
+  font-size: 44px;
+  line-height: 1.2;
+  font-weight: 900;
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    font-size: 28px;
+  }
+}
+
+.control {
+  @media (max-width: $mantine-breakpoint-xs) {
+    flex: 1;
+  }
+}
+
+.image {
+  width: 376px;
+  height: 356px;
+
+  @media (max-width: $mantine-breakpoint-md) {
+    display: none;
+  }
+}
+
+.highlight {
   position: relative;
-  border: 1px solid
-    light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-4));
-  background-color: light-dark(
-    var(--mantine-color-white),
-    var(--mantine-color-dark-6)
-  );
-
-  &:first-of-type {
-    border-radius: 4px 0 0 4px;
-
-    @mixin rtl {
-      border-radius: 0 4px 4px 0;
-    }
-  }
-
-  &:last-of-type {
-    border-radius: 0 4px 4px 0;
-
-    @mixin rtl {
-      border-radius: 4px 0 0 4px;
-    }
-  }
-
-  & + & {
-    border-left-width: 0;
-
-    @mixin rtl {
-      border-right-width: 0;
-      border-left-width: 1px;
-    }
-  }
-
-  @mixin hover {
-    background-color: light-dark(
-      var(--mantine-color-gray-0),
-      var(--mantine-color-dark-5)
-    );
-  }
-
-  &[data-active] {
-    z-index: 1;
-    background-color: var(--mantine-color-blue-filled);
-    border-color: var(--mantine-color-blue-filled);
-    color: var(--mantine-color-white);
-
-    @mixin hover {
-      background-color: var(--mantine-color-blue-filled-hover);
-    }
-  }
+  background-color: var(--mantine-color-blue-light);
+  border-radius: var(--mantine-radius-sm);
+  padding: 4px 12px;
 }

@@ -1,4 +1,4 @@
-import { Button, Container, Group } from "@mantine/core";
+import { Container, Group, Text } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import classes from "./header.module.css";
 
@@ -7,7 +7,11 @@ export function HeaderTabs() {
   return (
     <div className={classes.header}>
       <Container className={classes.mainSection} size="md">
-        <Group justify="space-between">Logo</Group>
+        <Group justify="center">
+          <Text size="xl" fw={600}>
+            Самбар
+          </Text>
+        </Group>
       </Container>
     </div>
   );
