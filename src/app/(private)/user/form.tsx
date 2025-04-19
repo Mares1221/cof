@@ -121,7 +121,7 @@ export default function UserForm({ payload, onSuccuss }: Props) {
                       error={error}
                       value={payload?.avatar || ""}
                       onChange={(value) => {
-                        setFieldValue("avatar", value?.url);
+                        setFieldValue("avatar", value?.image);
                       }}
                     />
                   )}
@@ -136,7 +136,7 @@ export default function UserForm({ payload, onSuccuss }: Props) {
                       error={error}
                       value={payload?.avatarThumbnail || ""}
                       onChange={(value) => {
-                        setFieldValue("avatarThumbnail", value?.url);
+                        setFieldValue("avatarThumbnail", value?.image);
                       }}
                     />
                   )}

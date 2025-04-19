@@ -149,21 +149,23 @@ const useHeader = ({
     ),
   },
   {
+    title: "Зураг",
+    align: "left",
+    render: (record) => <Avatar src={record?.image} />,
+  },
+  {
     title: "Нэр",
     align: "left",
-    width: "1px",
     render: (record) => record?.name || "-",
   },
   {
-    title: "Зураг",
+    title: "Нэмэлт мэдээлэл",
     align: "left",
-    width: "1px",
-    render: (record) => <Avatar src={record?.image} />,
+    render: (record) => record?.description || "-",
   },
   {
     title: "Идэвхтэй эсэх",
     align: "left",
-    width: "1px",
     render: (record) => (
       <Badge variant="dot" color={record?.isActive ? "green" : "red"}>
         {record?.isActive ? "Идэвхтэй" : "Идэвхгүй"}
@@ -173,7 +175,6 @@ const useHeader = ({
   {
     title: "Огноо",
     align: "left",
-    width: "1px",
     render: (record) => formatDate(record?.createdAt) || "-",
   },
 ];

@@ -13,19 +13,19 @@ import { mediaApi } from "@/apis";
 import { message } from "@/utils/message";
 import { IImage } from "@/interfaces/image";
 
+// Define the IFile type to match the API response
 export type IFile = {
-  uploading: boolean;
-  file: Blob | null;
-  value?: string;
-  url?: string;
-  size?: number;
+  image?: string | null; // URL string from the API
+  thumbnail?: string | null; // URL string from the API
+  uploading?: boolean;
+  size?: number | null;
 };
 
 type Props = {
-  onChange?: (file: IImage) => void;
+  onChange?: (file: IFile) => void;
   label?: string;
   error?: string;
-  value: string;
+  value?: string;
   required?: boolean;
   w: string;
   h: string;
@@ -46,11 +46,11 @@ export function ImageUpload({
   placeholder,
   icon,
 }: Props) {
-  const maxSizeInBytes = 10 * 1024 * 1024; //10mb
-  const [file, setFile] = React.useState<IFile>();
+  const maxSizeInBytes = 10 * 1024 * 1024; // 10MB
+  const [file, setFile] = React.useState<IFile | null>(null);
   const resetRef = React.useRef<() => void>(null);
 
-  const onFileUpload = (blob: Blob | null) => {
+  const onFileUpload = async (blob: File | null) => {
     if (!blob) return;
 
     if (blob.size > maxSizeInBytes) {
@@ -58,49 +58,53 @@ export function ImageUpload({
       return;
     }
 
-    (async () => {
-      try {
-        const form = new FormData();
-        form.append("file", blob);
-        const res = await mediaApi.upload(form);
-
-        $onChange && $onChange(res);
-
-        setFile({
-          file: null,
-          url: res?.url,
-          uploading: false,
-          size: blob.size,
-        });
-      } catch (err) {
-        message.error("Алдаа гарлаа");
-
-        setFile((state) => ({
-          file: state?.file!,
-          url: state?.url,
-          uploading: false,
-          size: state?.size,
-        }));
-      } finally {
-        onUploadStatus && onUploadStatus(false);
-      }
-    })();
-
     setFile({
-      file: blob,
+      image: null,
+      thumbnail: null,
       uploading: true,
+      size: blob.size,
     });
+    onUploadStatus?.(true);
 
-    onUploadStatus && onUploadStatus(true);
+    try {
+      // Upload the file
+      const form = new FormData();
+      form.append("file", blob);
+      const res = await mediaApi.upload(form);
+
+      // Update state with the API response
+      setFile({
+        image: res.image,
+        thumbnail: res.thumbnail,
+        uploading: false,
+        size: blob.size,
+      });
+
+      // Notify parent component of the uploaded image
+      $onChange?.(res);
+    } catch (err) {
+      message.error("Алдаа гарлаа");
+      setFile({
+        image: null,
+        thumbnail: null,
+        uploading: false,
+        size: null,
+      });
+    } finally {
+      onUploadStatus?.(false);
+    }
   };
 
+  // Handle initial value (if provided)
   React.useEffect(() => {
-    value &&
+    if (value) {
       setFile({
-        file: null,
-        url: value,
+        image: value,
+        thumbnail: null, // If you have a thumbnail URL in the initial value, you can set it here
         uploading: false,
+        size: null,
       });
+    }
   }, [value]);
 
   return (
@@ -112,20 +116,18 @@ export function ImageUpload({
           accept="image/png,image/jpeg,image/heic,image/webp,image/avif"
         >
           {(props) =>
-            file ? (
-              <Button w={w} h={h} {...props} variant="default">
+            file?.image ? (
+              <Button w={w} h={h} {...props} variant="default" pos="relative">
                 <Image
-                  src={
-                    file?.file ? URL?.createObjectURL(file?.file) : file?.url!
-                  }
+                  src={file.image} // Use the URL directly from the API response
                   fill
                   style={{
                     objectFit: "contain",
                   }}
-                  alt=""
+                  alt="Uploaded image"
                 />
                 <LoadingOverlay
-                  visible={file.uploading}
+                  visible={file.uploading || false}
                   opacity={0.3}
                   loaderProps={{ size: "sm" }}
                 />
@@ -135,16 +137,16 @@ export function ImageUpload({
                 variant="default"
                 w={w}
                 h={h}
-                style={{ borderColor: error && "red" }}
+                style={{ borderColor: error ? "red" : undefined }}
                 {...props}
               >
                 <Flex
                   direction="column"
-                  justify="center "
+                  justify="center"
                   align="center"
                   gap={5}
                 >
-                  <IconPhotoPlus color={error ? "red" : "gray"} />
+                  {icon || <IconPhotoPlus color={error ? "red" : "gray"} />}
                   <Text size="xs" c={error ? "red" : "gray"}>
                     {placeholder || "Зураг хуулах"}
                   </Text>

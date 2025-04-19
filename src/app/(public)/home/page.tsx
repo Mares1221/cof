@@ -1,134 +1,196 @@
 "use client";
 
 import { HeaderTabs } from "@/components/ui/header/page";
-import { HeroBullets } from "@/components/ui/hero-bullet/page";
 import MapBox from "@/components/ui/map-truck/page";
-import { formatCurrency } from "@/utils/currency";
-import {
-  BackgroundImage,
-  Card,
-  Container,
-  Image,
-  SimpleGrid,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
+import { ColumnType, Table } from "@/components/ui/table/table";
+import { Button, Group, Stack } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
+import { IconList, IconMapPin } from "@tabler/icons-react";
+import { useState } from "react";
 import Footer from "../footer/page";
-import { GetInTouch } from "@/components/ui/contact/page";
+import classes from "./home.module.css";
 
 export default function HomePage() {
-  const cards = [
-    {
-      image: "https://cdnus.globalso.com/sytonkiosk/yre.jpg",
-      category: "30 өдөр",
-      title: "LED дэлгэцэн самбар",
-      date: 55000,
-    },
-    {
-      image:
-        "https://mrp.market.mn/product_images/image/000/002/745/original.webp?1604565837",
-      category: "30 өдөр",
-      title: "Өлгөдөг самбар",
-      date: 25000,
-    },
-    {
-      image:
-        "https://pbs.twimg.com/media/DsXlAheU4AEEl58?format=jpg&name=large",
-      category: "30 өдөр",
-      title: "Гадаа самбар",
-      date: 75000,
-    },
-  ];
+  const [tabs, setTabs] = useState<string>("MAP");
+  const isMobile = useMediaQuery("(max-width: 1200px)");
+  const isMobileSmall = useMediaQuery("(max-width: 700px)");
+
+  const generateData = () => {
+    const baseData = [
+      {
+        index: 1,
+        town: "Алтай хотхон",
+        building: "A Block",
+        entrance: "2-р Орц",
+        startDate: "2025-02-01",
+        endDate: "2025-03-01",
+        duration: "2 Сар",
+      },
+      {
+        index: 2,
+        town: "Хурд хотхон",
+        building: "B Block",
+        entrance: "1-р Орц",
+        startDate: "2025-03-01",
+        endDate: "2025-04-01",
+        duration: "1 Сар",
+      },
+      {
+        index: 3,
+        town: "Нарны хороолол",
+        building: "C Block",
+        entrance: "3-р Орц",
+        startDate: "2025-04-01",
+        endDate: "2025-05-01",
+        duration: "1 Сар",
+      },
+      {
+        index: 4,
+        town: "Баянзүрх хотхон",
+        building: "D Block",
+        entrance: "4-р Орц",
+        startDate: "2025-05-01",
+        endDate: "2025-07-01",
+        duration: "2 Сар",
+      },
+      {
+        index: 5,
+        town: "Сүхбаатар хотхон",
+        building: "E Block",
+        entrance: "5-р Орц",
+        startDate: "2025-06-01",
+        endDate: "2025-08-01",
+        duration: "2 Сар",
+      },
+    ];
+
+    const data = [];
+    for (let i = 0; i < 100; i++) {
+      const baseIndex = i % 5; // Эхний 5-г ээлжлэн хуулна
+      data.push({
+        ...baseData[baseIndex],
+        index: i + 1, // index-г дарааллаар шинэчилнэ
+      });
+    }
+
+    return data;
+  };
+
+  const data = generateData();
 
   return (
     <>
       <HeaderTabs />
-      <BackgroundImage
-        src="https://greatergo.org/uploads/article/63ab00ab-f707-4b23-b389-96b04b22552a.jpg"
-        style={{
-          height: "60vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
+      <Stack
+        align="center"
+        h={"70vh"}
+        mb="xl"
+        mx={isMobile ? "5%" : isMobileSmall ? "3%" : "8%"}
       >
-        <Container size="lg" style={{ textAlign: "center" }}>
-          <Text size="md" color="white">
-            Бидний тухай
-          </Text>
-          <Title order={1} c="white" style={{ fontSize: 48, margin: "10px 0" }}>
-            Бид хэн бэ?
-          </Title>
-          <Text
-            size="lg"
-            color="white"
-            style={{ maxWidth: 600, margin: "0 auto" }}
+        <Group mt={30}>
+          <Button
+            radius="xl"
+            size="md"
+            className={classes.control}
+            onClick={() => setTabs("MAP")}
+            variant={tabs === "MAP" ? "filled" : "default"}
+            leftSection={<IconMapPin />}
           >
-            Бид таны амьдралыг илүү хялбар, тав тухтай болгохын төлөө ажилладаг
-            баг юм. Манай үйлчилгээ танд хамгийн сайн туршлагыг өгөхийг зорьдог.
-          </Text>
-        </Container>
-      </BackgroundImage>
-
-      <HeroBullets />
-
-      <Container size="lg" style={{ padding: "40px 0" }} mb="xl">
-        <Title ta="center">Самбарын төрөл</Title>
-        <SimpleGrid cols={3} spacing="lg">
-          {cards.map((card, index) => (
-            <Card key={index} shadow="sm" padding="lg" radius="md" withBorder>
-              <Card.Section>
-                <Image src={card.image} height={160} alt={card.title} />
-              </Card.Section>
-              <Title order={4} mt="xs">
-                {card.title}
-              </Title>
-              <Text size="sm" c="dimmed" mt="xs">
-                {card.category}
-              </Text>
-              <Text size="sm" fw={600}>
-                {formatCurrency(card.date)}
-              </Text>
-            </Card>
-          ))}
-        </SimpleGrid>
-      </Container>
-      <Stack align="center" h={"70vh"}>
-        <Title>Самбар байршуулах боломжит газарууд</Title>
-        <MapBox
-          coordinates={[
-            {
-              location: [106.9, 47.9],
-              title: "A байрлал",
-              description: "Энэ бол анхны байрлал",
-              iconUrl: "/pin.png",
-            },
-            {
-              location: [106.91, 47.92],
-              title: "B байрлал",
-              description: "Хоёр дахь цэг",
-              iconUrl: "/pin.png",
-            },
-            {
-              location: [106.91, 47.9],
-              title: "B байрлал",
-              description: "Хоёр дахь цэг",
-              iconUrl: "/pin.png",
-            },
-            {
-              location: [106.9, 47.9],
-              title: "A байрлал",
-              description: "Энэ бол анхны байрлал",
-              iconUrl: "/pin.png",
-            },
-          ]}
-        />
+            Газрын зурагаар харах
+          </Button>
+          <Button
+            radius="xl"
+            size="md"
+            className={classes.control}
+            onClick={() => setTabs("LIST")}
+            leftSection={<IconList />}
+            variant={tabs === "LIST" ? "filled" : "default"}
+          >
+            Жагсаалтаар харах
+          </Button>
+        </Group>
+        <div style={{ width: "100%", height: "600px" }}>
+          {tabs === "MAP" ? (
+            <MapBox
+              coordinates={[
+                {
+                  location: [106.9, 47.9],
+                  title: "A байрлал",
+                  description: "Энэ бол анхны байрлал",
+                  iconUrl: "/pin.png",
+                },
+                {
+                  location: [106.91, 47.92],
+                  title: "B байрлал",
+                  description: "Хоёр дахь цэг",
+                  iconUrl: "/pin.png",
+                },
+                {
+                  location: [106.91, 47.9],
+                  title: "B байрлал",
+                  description: "Хоёр дахь цэг",
+                  iconUrl: "/pin.png",
+                },
+                {
+                  location: [106.9, 47.9],
+                  title: "A байрлал",
+                  description: "Энэ бол анхны байрлал",
+                  iconUrl: "/pin.png",
+                },
+              ]}
+            />
+          ) : (
+            <Table
+              limit={10}
+              columns={useHeader()}
+              name="swr.entarnce.list"
+              dataSource={data}
+              filters={{
+                query: "",
+              }}
+            />
+          )}
+        </div>
       </Stack>
-      <GetInTouch />
       <Footer />
     </>
   );
 }
+
+const useHeader = (): ColumnType<any>[] => [
+  {
+    title: "#",
+    width: "1px",
+    render: (_, index) => index + 1,
+  },
+  {
+    title: "Хотхон",
+    align: "left",
+    render: (record) => record?.town || "-",
+  },
+  {
+    title: "Байр",
+    align: "left",
+    render: (record) => record?.building || "-",
+  },
+  {
+    title: "Орц",
+    align: "left",
+    render: (record) => record?.entrance || "-",
+  },
+  {
+    title: "Байршсан огноо",
+    align: "left",
+    render: (record) => record?.startDate || "-",
+  },
+  {
+    title: "Дуусах огноо",
+    align: "left",
+    render: (record) => record?.endDate || "-",
+  },
+  {
+    title: "Тохирсон өдөр",
+    align: "left",
+    render: (record) => record?.duration || "-",
+  },
+];

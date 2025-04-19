@@ -66,44 +66,14 @@ export default function AdForm({ payload, onSuccess }: Props) {
         return (
           <Stack>
             <Grid>
-              <Grid.Col span={{ base: 12, md: 6 }}>
-                <Field name="image">
-                  {({ error }) => (
-                    <ImageUpload
-                      w="100%"
-                      h="300px"
-                      error={error}
-                      value={payload?.image || ""}
-                      onChange={(value) => {
-                        setFieldValue("image", value?._id);
-                      }}
-                    />
-                  )}
-                </Field>
-              </Grid.Col>
-              <Grid.Col span={{ base: 12, md: 6 }}>
-                <Field name="thumbnail">
-                  {({ error }) => (
-                    <ImageUpload
-                      w="100%"
-                      h="300px"
-                      error={error}
-                      value={payload?.thumbnail || ""}
-                      onChange={(value) => {
-                        setFieldValue("thumbnail", value?._id);
-                      }}
-                    />
-                  )}
-                </Field>
-              </Grid.Col>
-              <Grid.Col span={{ base: 12, md: 6 }}>
+              <Grid.Col span={12}>
                 <NumberField
                   name="customer"
                   label="customer"
                   placeholder="customer"
                 />
               </Grid.Col>
-              <Grid.Col span={{ base: 12, md: 6 }}>
+              <Grid.Col span={12}>
                 <SelectField
                   name="durationType"
                   label="Хугацаа"
@@ -114,14 +84,14 @@ export default function AdForm({ payload, onSuccess }: Props) {
                   ]}
                 />
               </Grid.Col>
-              <Grid.Col span={{ base: 12, md: 6 }}>
+              <Grid.Col span={12}>
                 <NumberField
                   name="duration"
                   label="duration"
                   placeholder="duration"
                 />
               </Grid.Col>
-              <Grid.Col span={{ base: 12, md: 6 }}>
+              <Grid.Col span={12}>
                 <DatePickerField
                   name="startAt"
                   label="Эхлэх өдөр"
@@ -135,12 +105,42 @@ export default function AdForm({ payload, onSuccess }: Props) {
                   placeholder="Нэмэлт тайлбар"
                 />
               </Grid.Col>
-              <Grid.Col span={{ base: 12, md: 6 }}>
+              <Grid.Col span={12}>
                 <NumberField
                   name="boards"
                   label="Самбарууд"
                   placeholder="Самбарууд"
                 />
+              </Grid.Col>
+              <Grid.Col span={12}>
+                <Field name="image">
+                  {({ error }) => (
+                    <ImageUpload
+                      w="100%"
+                      h="300px"
+                      error={error}
+                      value={payload?.image || ""}
+                      onChange={(value) => {
+                        setFieldValue("image", value?.image);
+                      }}
+                    />
+                  )}
+                </Field>
+              </Grid.Col>
+              <Grid.Col span={12}>
+                <Field name="thumbnail">
+                  {({ error }) => (
+                    <ImageUpload
+                      w="100%"
+                      h="300px"
+                      error={error}
+                      value={payload?.image || ""}
+                      onChange={(value) => {
+                        setFieldValue("thumbnail", value?.image);
+                      }}
+                    />
+                  )}
+                </Field>
               </Grid.Col>
             </Grid>
             <Group justify="flex-end" gap="xs">

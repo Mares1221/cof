@@ -1,6 +1,6 @@
 "use client";
 
-import { complexApi, townApi } from "@/apis";
+import { townApi } from "@/apis";
 import PageLayout from "@/components/layout/page-layout/page-layout";
 import { ActionButton } from "@/components/ui/action-button/page";
 import {
@@ -13,10 +13,19 @@ import { IComplex } from "@/interfaces/complex";
 import { Complex } from "@/models/complex";
 import { errorParse } from "@/utils/errorParse";
 import { message } from "@/utils/message";
-import { Button, Drawer, Text, TextInput } from "@mantine/core";
+import { formatDate } from "@/utils/time-age";
+import {
+  Avatar,
+  Badge,
+  Button,
+  Drawer,
+  Group,
+  Text,
+  TextInput,
+} from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import { openContextModal } from "@mantine/modals";
-import { IconDownload, IconPlus, IconSearch } from "@tabler/icons-react";
+import { IconPlus, IconSearch } from "@tabler/icons-react";
 import "boxicons/css/boxicons.min.css";
 import { useRef, useState } from "react";
 import ComplexForm from "./form";
@@ -49,7 +58,7 @@ export default function ComplexPage() {
               children: "Та устгах үйлдэлийг хийхдээ итгэлтэй байна уу",
               onConfirm: async (close: () => void) => {
                 try {
-                  await complexApi.remove(record._id);
+                  await townApi.remove(record._id);
                   message.success("Хүсэлт амжиллтай");
                   close();
                   tableRef.current?.reload();
@@ -74,24 +83,23 @@ export default function ComplexPage() {
           href: "/complex",
         },
       ]}
-      extra={[
-        <Button leftSection={<IconDownload size={18} />} variant="default">
-          Excel болгон татах
-        </Button>,
+      extra={
         <Button
           leftSection={<IconPlus size={18} />}
           onClick={() => setAction([true, null])}
         >
           Нэмэх
-        </Button>,
-      ]}
+        </Button>
+      }
     >
-      <TextInput
-        placeholder="Хайх"
-        value={filters?.query || ""}
-        leftSection={<IconSearch size={18} />}
-        onChange={(e) => setFilters({ query: e.currentTarget.value })}
-      />
+      <Group>
+        <TextInput
+          placeholder="Хайх"
+          value={filters?.query || ""}
+          leftSection={<IconSearch size={18} />}
+          onChange={(e) => setFilters({ query: e.currentTarget.value })}
+        />
+      </Group>
       <Table
         limit={15}
         ref={tableRef}
@@ -148,8 +156,33 @@ const useHeader = ({
     ),
   },
   {
+    title: "Зураг",
+    align: "left",
+    render: (record) => <Avatar src={record?.image} radius="sm" />,
+  },
+  {
     title: "Хотхоны нэр",
     align: "left",
     render: (record) => record?.name || "-",
+  },
+  {
+    title: "Тайлбар",
+    align: "left",
+    render: (record) => record?.description || "-",
+  },
+  {
+    title: "Идэвхтэй эсэх",
+    align: "left",
+    width: "1px",
+    render: (record) => (
+      <Badge variant="dot" color={record?.isActive ? "green" : "red"}>
+        {record?.isActive ? "Идэвхтэй" : "Идэвхгүй"}
+      </Badge>
+    ),
+  },
+  {
+    title: "Огноо",
+    align: "left",
+    render: (record) => formatDate(record?.createdAt) || "-",
   },
 ];

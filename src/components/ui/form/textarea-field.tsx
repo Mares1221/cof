@@ -16,6 +16,8 @@ export function TextareaField({
   return (
     <Textarea
       {...rest}
+      radius="md"
+      variant="filled"
       error={error}
       value={value}
       onChange={(e) => {

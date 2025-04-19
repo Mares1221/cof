@@ -1,14 +1,17 @@
 "use client";
 
-import { entranceApi } from "@/apis";
+import { buildingApi, entranceApi } from "@/apis";
 import { Form } from "@/components/ui/form";
+import { SelectField } from "@/components/ui/form/select-field";
 import { TextField } from "@/components/ui/form/text-field";
 import { TextareaField } from "@/components/ui/form/textarea-field";
+import { IBuilding } from "@/interfaces/building";
 import { IEntrance } from "@/interfaces/entracne";
 import HttpHandler from "@/utils/http/http-handler";
 import { message } from "@/utils/message";
 import { Button, Grid, Group, Stack } from "@mantine/core";
 import { useState } from "react";
+import useSWR from "swr";
 import * as yup from "yup";
 
 const FormSchema = yup.object({
@@ -46,6 +49,22 @@ export default function EntranceForm({ payload, onSuccess }: Props) {
     }
   };
 
+  const { data: buildings } = useSWR<any>("ad.building.list", async () => {
+    try {
+      const res = await buildingApi.list({
+        filter: { query: "" },
+        offset: {
+          page: 1,
+          limit: 50,
+        },
+      });
+      return res;
+    } catch (err) {
+      message.error("Алдаа гарлаа");
+      throw err;
+    }
+  });
+
   return (
     <Form
       onSubmit={onSubmit}
@@ -57,7 +76,15 @@ export default function EntranceForm({ payload, onSuccess }: Props) {
           <Stack>
             <Grid>
               <Grid.Col span={{ base: 12, md: 6 }}>
-                <TextField name="building" label="Байр" placeholder="Байр" />
+                <SelectField
+                  name="building"
+                  label="Байр"
+                  placeholder="Байр"
+                  options={buildings?.rows?.map((item: IBuilding) => ({
+                    label: item?.name,
+                    value: item?._id,
+                  }))}
+                />
               </Grid.Col>
               <Grid.Col span={{ base: 12, md: 6 }}>
                 <TextField name="name" label="Нэр" placeholder="Нэр" />

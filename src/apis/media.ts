@@ -1,11 +1,11 @@
 import { HttpRequest } from "@/utils/request";
 
-const httpRequest = new HttpRequest(null, "/med");
+const httpRequest = new HttpRequest(null, "/api/api");
 
 export const upload = async (data: FormData) => {
   const res = await httpRequest.upload(
-    "/image/upload",
-    data as unknown as { file: Blob },
+    "/media/image",
+    data as unknown as { file: Blob }
   );
   return res;
 };

@@ -9,8 +9,7 @@ export function HeroBullets() {
       <div className={classes.inner}>
         <div className={classes.content}>
           <Title className={classes.title}>
-            Манай <span className={classes.highlight}>самбарын</span>
-            <br /> давуу тал
+            <span className={classes.highlight}>Давуу</span> талууд
           </Title>
           <Text c="dimmed" mt="md">
             Build fully functional accessible web applications faster than ever
@@ -29,16 +28,16 @@ export function HeroBullets() {
             }
           >
             <List.Item>
-              <b>TypeScript based</b> – build type safe applications, all
-              components and hooks export types
+              <b>Түргэн шуурхай</b> – Түргэн шуурхай таны таны зарын самбарыг
+              байршуулж өгнө
             </List.Item>
             <List.Item>
-              <b>Free and open source</b> – all packages have MIT license, you
-              can use Mantine in any project
+              <b>Олон газар байршуулах</b> – Бидэнд самбар байршуулах олон цэг
+              байгаа бөгөөд оршин суугч олонтой хотхон байруудад байршдаг
             </List.Item>
             <List.Item>
-              <b>No annoying focus ring</b> – focus ring will appear only when
-              user navigates with keyboard
+              <b>Бодит үр дүн</b> – Хүний хараад шууд унших бодит байршил болон
+              загварын хувьд маш шийдэмгий байх болно
             </List.Item>
           </List>
         </div>

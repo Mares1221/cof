@@ -1,130 +1,87 @@
-"use client";
-
 import "mapbox-gl/dist/mapbox-gl.css";
 import mapboxgl from "mapbox-gl";
 import { useEffect, useRef, useState } from "react";
-import { IconPin } from "@tabler/icons-react";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoiYm9sZGtvdjEiLCJhIjoiY2xpdHg0bGhrMDlkZjNmbzJ1Y2pjeWE2eSJ9.0XXgizx295KsOkq8ChY5fg";
 
-type CoordinateItem = {
-  location: mapboxgl.LngLatLike;
-  title: string;
-  description?: string;
-  iconUrl?: string; // optional
-};
-
 export default function MapBox({
-  coordinates = [],
+  coordinates,
   onClick = () => {},
 }: {
-  coordinates?: CoordinateItem[];
-  onClick?: (e: any) => void;
+  coordinates?: mapboxgl.LngLatLike;
+  onClick?: (lngLat: mapboxgl.LngLat) => void;
 }) {
-  const mapContainerRef = useRef(null);
+  const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const [map, setMap] = useState<mapboxgl.Map | null>(null);
-  const [markers, setMarkers] = useState<mapboxgl.Marker[]>([]);
-  const [bounds, setBounds] = useState<mapboxgl.LngLatBounds | null>(null);
+  const [currentMarker, setCurrentMarker] = useState<mapboxgl.Marker | null>(
+    null
+  );
 
   useEffect(() => {
-    const map = new mapboxgl.Map({
-      container: mapContainerRef.current!,
-      style: "mapbox://styles/mapbox/outdoors-v12",
-      center: [106.9137, 47.9205],
+    if (!mapContainerRef.current) return;
+
+    const mapInstance = new mapboxgl.Map({
+      container: mapContainerRef.current,
+      style: "mapbox://styles/mapbox/streets-v11",
+      center: [106.91377748380476, 47.92058872954049],
       zoom: 12,
       attributionControl: false,
     });
 
-    map.on("click", onClick);
-    setMap(map);
+    mapInstance.on("click", (e) => {
+      if (currentMarker) {
+        currentMarker.remove();
+      }
+
+      const newMarker = new mapboxgl.Marker({
+        color: "black",
+      })
+        .setLngLat(e.lngLat)
+        .addTo(mapInstance);
+
+      setCurrentMarker(newMarker);
+      onClick(e.lngLat);
+    });
+
+    setMap(mapInstance);
 
     return () => {
+      mapInstance.remove();
       setMap(null);
-      map.remove();
     };
   }, []);
 
   useEffect(() => {
-    if (!map || !coordinates.length) return;
+    if (!map || !coordinates) return;
 
-    markers.forEach((m) => m.remove());
-
-    const newMarkers: mapboxgl.Marker[] = [];
-    const newBounds = new mapboxgl.LngLatBounds();
-
-    coordinates.forEach(({ location, title, description, iconUrl }) => {
-      const el = document.createElement("div");
-      el.style.backgroundImage = `url('${iconUrl || <IconPin />}')`;
-      el.style.width = "40px";
-      el.style.height = "40px";
-      el.style.backgroundSize = "cover";
-      el.style.backgroundRepeat = "no-repeat";
-      el.style.backgroundPosition = "center";
-      el.style.cursor = "pointer";
-
-      const marker = new mapboxgl.Marker({ element: el })
-        .setLngLat(location)
-        .addTo(map);
-
-      if (title || description) {
-        const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
-          <strong>${title}</strong><br />
-          <small>${description || ""}</small>
-        `);
-        marker.setPopup(popup);
-      }
-
-      newMarkers.push(marker);
-      newBounds.extend(location);
+    map.flyTo({
+      center: coordinates,
     });
 
-    setMarkers(newMarkers);
-    setBounds(newBounds);
+    if (currentMarker) {
+      currentMarker.remove();
+    }
 
-    return () => {
-      newMarkers.forEach((m) => m.remove());
-    };
+    const newMarker = new mapboxgl.Marker({
+      color: "black",
+    })
+      .setLngLat(coordinates)
+      .addTo(map);
+
+    setCurrentMarker(newMarker);
   }, [coordinates, map]);
 
-  const handleFitBounds = () => {
-    if (map && bounds && !bounds.isEmpty()) {
-      map.fitBounds(bounds, {
-        padding: 100,
-        duration: 1000,
-      });
-    }
-  };
-
   return (
-    <div style={{ position: "relative", width: "100%", height: "100%" }}>
-      <div
-        ref={mapContainerRef}
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-        }}
-      />
-
-      <button
-        onClick={handleFitBounds}
-        style={{
-          position: "absolute",
-          top: 10,
-          right: 10,
-          zIndex: 1,
-          background: "white",
-          padding: "10px 15px",
-          borderRadius: "8px",
-          boxShadow: "0 2px 6px rgba(0,0,0,0.3)",
-          cursor: "pointer",
-        }}
-      >
-        Томруулж харах
-      </button>
-    </div>
+    <div
+      style={{
+        position: "absolute",
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+      }}
+      ref={mapContainerRef}
+    />
   );
 }

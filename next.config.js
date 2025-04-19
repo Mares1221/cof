@@ -5,12 +5,8 @@ const rewritesConfig = isDevelopment
   ? [
       {
         source: "/:path*/api/:path*",
-        destination: `${process.env.NEXT_PUBLIC_AUTH_API_HOST}/api/:path*`,
+        destination: `${process.env.NEXT_PUBLIC_DEV_API_HOST}/api/:path*`,
       },
-      // {
-      //   source: "/rest/:path*",
-      //   destination: `${process.env.NEXT_PUBLIC_GATE_API_HOST}/:path*`,
-      // },
     ]
   : [];
 
@@ -54,7 +50,13 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "dev-goodtech.s3.ap-southeast-1.amazonaws.com",
+        hostname: "*.s3.amazonaws.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "liftup-2025.s3.amazonaws.com", // Шинээр нэмэгдсэн хост
         port: "",
         pathname: "/**",
       },
