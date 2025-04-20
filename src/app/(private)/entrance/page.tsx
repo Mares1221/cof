@@ -150,12 +150,12 @@ const useHeader = ({
   {
     title: "Хотхон",
     align: "left",
-    render: (record) => record?.town?.name || "-",
+    render: (record) => record?.town?.name || "Тэлмэн хотхон",
   },
   {
     title: "Байр",
     align: "left",
-    render: (record) => record?.building?.name || "-",
+    render: (record) => record?.building?.name || "A Block",
   },
   {
     title: "Орцны дугаар",

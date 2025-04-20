@@ -101,6 +101,7 @@ export default function AdPage() {
         }}
       />
       <Drawer
+        size="40%"
         opened={action[0]}
         onClose={() => setAction([false, null])}
         title={
@@ -147,13 +148,18 @@ const useHeader = ({
   {
     title: "Зураг",
     align: "left",
-    render: (record) => <Avatar src={record?.image} />,
+    render: (record) => <Avatar src={record?.image} radius="sm" size="lg" />,
   },
-  // {
-  //   title: "Нэр",
-  //   align: "left",
-  //   render: (record) => record?.towns || "-",
-  // },
+  {
+    title: "Хугацааны төрөл",
+    align: "left",
+    render: (record) => (record?.durationType === "day" ? "Өдөр" : "Сар"),
+  },
+  {
+    title: "Үргэлжлэх хугацаа",
+    align: "left",
+    render: (record) => record?.duration || "-",
+  },
   {
     title: "Нэмэлт мэдээлэл",
     align: "left",
@@ -169,8 +175,13 @@ const useHeader = ({
     ),
   },
   {
-    title: "Огноо",
+    title: "Эхлэх огноо",
     align: "left",
-    render: (record) => formatDate(record?.createdAt) || "-",
+    render: (record) => formatDate(record?.startAt) || "-",
+  },
+  {
+    title: "Дуусах огноо",
+    align: "left",
+    render: (record) => formatDate(record?.endAt) || "-",
   },
 ];

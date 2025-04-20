@@ -56,7 +56,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "liftup-2025.s3.amazonaws.com", // Шинээр нэмэгдсэн хост
+        hostname: "liftup-2025.s3.amazonaws.com",
         port: "",
         pathname: "/**",
       },

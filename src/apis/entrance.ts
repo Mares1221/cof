@@ -4,7 +4,7 @@ import { Entrance } from "@/models/entrance";
 import { Result } from "@/models/result";
 import { HttpRequest } from "@/utils/request";
 
-const httpRequest = new HttpRequest(null, "/aut/api");
+const httpRequest = new HttpRequest(null, "/api/api");
 
 export const list = async (data: any) => {
   const res = await httpRequest.get("/entrance", data);

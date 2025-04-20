@@ -21,6 +21,8 @@ export function DatePickerField({
     <>
       <DateInput
         {...rest}
+        radius="md"
+        variant="filled"
         placeholder={placeholder || "Огноо сонгох"}
         locale="mn"
         valueFormat="MM-DD-YYYY"

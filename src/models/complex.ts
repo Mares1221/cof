@@ -1,4 +1,5 @@
 import { IComplex } from "@/interfaces/complex";
+import { ILocation } from "@/interfaces/location";
 
 export class Complex implements IComplex {
   _id: string;
@@ -14,8 +15,7 @@ export class Complex implements IComplex {
   image: string;
   thumbnail: string;
   isLocated: string;
-  location: string;
-  coordinates: string[];
+  location: ILocation;
 
   constructor(json: IComplex) {
     this._id = json._id;
@@ -32,7 +32,7 @@ export class Complex implements IComplex {
     this.thumbnail = json.thumbnail;
     this.isLocated = json.isLocated;
     this.location = json.location;
-    this.coordinates = json.coordinates;
+    this.location = json.location;
   }
 
   static fromJson(json: any) {

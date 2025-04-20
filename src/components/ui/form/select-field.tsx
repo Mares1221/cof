@@ -60,7 +60,7 @@ export function SelectField({
       defaultValue={defaultValue}
       value={$value || value}
       disabled={disabled}
-      radius="xl"
+      radius="md"
       variant="filled"
       onChange={(value) => {
         onChange(value || "");

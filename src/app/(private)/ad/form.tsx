@@ -10,7 +10,7 @@ import { ImageUpload } from "@/components/ui/upload/image-upload";
 import { IAd } from "@/interfaces/ad";
 import HttpHandler from "@/utils/http/http-handler";
 import { message } from "@/utils/message";
-import { Button, Grid, Group, Stack } from "@mantine/core";
+import { Button, Grid, Group, Stack, Text } from "@mantine/core";
 import { useState } from "react";
 import * as yup from "yup";
 
@@ -19,7 +19,8 @@ const FormSchema = yup.object({
   duration: yup.string().required("Заавал бөглөнө!"),
   startAt: yup.string().required("Заавал бөглөнө!"),
   description: yup.string().required("Заавал бөглөнө!"),
-  boards: yup.string().required("Заавал бөглөнө!"),
+  thumbnail: yup.string().required("Заавал бөглөнө!"),
+  image: yup.string().required("Заавал бөглөнө!"),
 });
 
 type Props = {
@@ -66,18 +67,18 @@ export default function AdForm({ payload, onSuccess }: Props) {
         return (
           <Stack>
             <Grid>
-              <Grid.Col span={12}>
+              {/* <Grid.Col span={12}>
                 <NumberField
                   name="customer"
                   label="customer"
                   placeholder="customer"
                 />
-              </Grid.Col>
+              </Grid.Col> */}
               <Grid.Col span={12}>
                 <SelectField
                   name="durationType"
-                  label="Хугацаа"
-                  placeholder="Хугацаа"
+                  label="Хугацааны төрөл"
+                  placeholder="Хугацааны төрөл"
                   options={[
                     { label: "Өдөр", value: "day" },
                     { label: "Сар", value: "month" },
@@ -87,8 +88,8 @@ export default function AdForm({ payload, onSuccess }: Props) {
               <Grid.Col span={12}>
                 <NumberField
                   name="duration"
-                  label="duration"
-                  placeholder="duration"
+                  label="Үргэлжлэх хугацаа"
+                  placeholder="Үргэлжлэх хугацаа"
                 />
               </Grid.Col>
               <Grid.Col span={12}>
@@ -105,18 +106,21 @@ export default function AdForm({ payload, onSuccess }: Props) {
                   placeholder="Нэмэлт тайлбар"
                 />
               </Grid.Col>
-              <Grid.Col span={12}>
+              {/* <Grid.Col span={12}>
                 <NumberField
                   name="boards"
                   label="Самбарууд"
                   placeholder="Самбарууд"
                 />
-              </Grid.Col>
+              </Grid.Col> */}
               <Grid.Col span={12}>
+                <Text size="14px" fw={500} mb="4px">
+                  Зураг
+                </Text>
                 <Field name="image">
                   {({ error }) => (
                     <ImageUpload
-                      w="100%"
+                      w="300px"
                       h="300px"
                       error={error}
                       value={payload?.image || ""}
@@ -128,10 +132,13 @@ export default function AdForm({ payload, onSuccess }: Props) {
                 </Field>
               </Grid.Col>
               <Grid.Col span={12}>
+                <Text size="14px" fw={500} mb="4px">
+                  Thumbnail Зураг
+                </Text>
                 <Field name="thumbnail">
                   {({ error }) => (
                     <ImageUpload
-                      w="100%"
+                      w="300px"
                       h="300px"
                       error={error}
                       value={payload?.image || ""}

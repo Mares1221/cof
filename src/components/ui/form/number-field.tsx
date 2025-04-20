@@ -18,7 +18,7 @@ export function NumberField({
   return (
     <NumberInput
       {...rest}
-      radius="xl"
+      radius="md"
       variant="filled"
       hideControls
       error={error}

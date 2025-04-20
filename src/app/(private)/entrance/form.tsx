@@ -36,7 +36,10 @@ export default function EntranceForm({ payload, onSuccess }: Props) {
     setLoading(true);
     try {
       if (payload) {
-        await entranceApi.update(payload._id, values);
+        await entranceApi.update(payload._id, {
+          ...values,
+          building: undefined,
+        });
       } else {
         await entranceApi.create(values);
       }

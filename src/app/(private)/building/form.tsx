@@ -5,11 +5,12 @@ import { Field, Form } from "@/components/ui/form";
 import { SelectField } from "@/components/ui/form/select-field";
 import { SwitchField } from "@/components/ui/form/switch-field";
 import { TextField } from "@/components/ui/form/text-field";
+import MapBox from "@/components/ui/map/page";
 import { ImageUpload } from "@/components/ui/upload/image-upload";
 import { IBuilding } from "@/interfaces/building";
 import HttpHandler from "@/utils/http/http-handler";
 import { message } from "@/utils/message";
-import { Button, Grid, Group, Stack } from "@mantine/core";
+import { Button, Grid, Group, Stack, Text } from "@mantine/core";
 import { useState } from "react";
 import useSWR from "swr";
 import * as yup from "yup";
@@ -32,14 +33,14 @@ export default function BuildingForm({ payload, onSuccuss }: Props) {
     image: payload?.image || undefined,
     thumbnail: payload?.thumbnail || undefined,
     isActive: payload?.isActive || false,
-    coordinates: payload?.coordinates || [47.9016929, 106.8718291],
+    coordinates: payload?.location || [47.9016929, 106.8718291],
   });
 
   const onSubmit = async (values: typeof data) => {
     setLoading(true);
     try {
       if (payload) {
-        await buildingApi.update(payload._id, values);
+        await buildingApi.update(payload._id, { ...values, town: undefined });
       } else {
         await buildingApi.create(values);
       }
@@ -68,6 +69,8 @@ export default function BuildingForm({ payload, onSuccuss }: Props) {
     }
   });
 
+  const isDisabled = payload?.town ? true : false;
+
   return (
     <Form
       onSubmit={onSubmit}
@@ -81,6 +84,7 @@ export default function BuildingForm({ payload, onSuccuss }: Props) {
               <Grid.Col span={12}>
                 <SelectField
                   name="town"
+                  disabled={isDisabled}
                   label="Хотхон"
                   placeholder="Хотхон"
                   options={town?.rows?.map((item: IBuilding) => ({
@@ -103,10 +107,23 @@ export default function BuildingForm({ payload, onSuccuss }: Props) {
                 <SwitchField name="isActive" label="Идэвхтэй эсэх" />
               </Grid.Col>
               <Grid.Col span={12}>
+                <Text fw={500} size="15px" mb="sm">
+                  Байршил
+                </Text>
+                <Stack style={{ position: "relative", height: "400px" }}>
+                  <MapBox
+                    coordinates={payload?.coordinates as any}
+                    onClick={(e) =>
+                      setFieldValue("coordinates", [e?.lat, e?.lng])
+                    }
+                  />
+                </Stack>
+              </Grid.Col>
+              <Grid.Col span={12}>
                 <Field name="image">
                   {({ error }) => (
                     <ImageUpload
-                      w="100%"
+                      w="300px"
                       h="300px"
                       error={error}
                       value={payload?.image || ""}
@@ -116,13 +133,6 @@ export default function BuildingForm({ payload, onSuccuss }: Props) {
                     />
                   )}
                 </Field>
-              </Grid.Col>
-              <Grid.Col span={12}>
-                <TextField
-                  name="coordinates"
-                  label="coordinates"
-                  placeholder="coordinates"
-                />
               </Grid.Col>
             </Grid>
             <Group justify="flex-end" gap="xs">

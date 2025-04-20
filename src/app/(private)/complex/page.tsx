@@ -112,6 +112,7 @@ export default function ComplexPage() {
         }}
       />
       <Drawer
+        size="40%"
         opened={action[0]}
         onClose={() => setAction([false, null])}
         title={
@@ -158,7 +159,7 @@ const useHeader = ({
   {
     title: "Зураг",
     align: "left",
-    render: (record) => <Avatar src={record?.image} radius="sm" />,
+    render: (record) => <Avatar src={record?.image} radius="sm" size="lg" />,
   },
   {
     title: "Хотхоны нэр",
@@ -169,6 +170,16 @@ const useHeader = ({
     title: "Тайлбар",
     align: "left",
     render: (record) => record?.description || "-",
+  },
+  {
+    title: "Байршил",
+    align: "left",
+    width: "1px",
+    render: (record) => (
+      <Badge variant="dot" color={record?.isActive ? "green" : "red"} w="150px">
+        {record?.isActive ? "Тэмдэглэгдсэн" : "Тэмдэглэгдээгүй"}
+      </Badge>
+    ),
   },
   {
     title: "Идэвхтэй эсэх",

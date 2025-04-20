@@ -1,6 +1,6 @@
 import "mapbox-gl/dist/mapbox-gl.css";
 import mapboxgl from "mapbox-gl";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoiYm9sZGtvdjEiLCJhIjoiY2xpdHg0bGhrMDlkZjNmbzJ1Y2pjeWE2eSJ9.0XXgizx295KsOkq8ChY5fg";
@@ -13,64 +13,80 @@ export default function MapBox({
   onClick?: (lngLat: mapboxgl.LngLat) => void;
 }) {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
-  const [map, setMap] = useState<mapboxgl.Map | null>(null);
-  const [currentMarker, setCurrentMarker] = useState<mapboxgl.Marker | null>(
-    null
-  );
+  const mapRef = useRef<mapboxgl.Map | null>(null);
+  const markerRef = useRef<mapboxgl.Marker | null>(null);
+
+  // Координатын валидац
+  const isValidCoordinates = (coords: any): coords is [number, number] =>
+    Array.isArray(coords) &&
+    coords.length === 2 &&
+    coords.every((n) => typeof n === "number");
 
   useEffect(() => {
     if (!mapContainerRef.current) return;
 
+    // Map-г инициалчлах
     const mapInstance = new mapboxgl.Map({
       container: mapContainerRef.current,
       style: "mapbox://styles/mapbox/streets-v11",
-      center: [106.91377748380476, 47.92058872954049],
+      center: isValidCoordinates(coordinates)
+        ? coordinates
+        : [106.91367547215157, 47.9204588626057], // Default [lng, lat]
       zoom: 12,
       attributionControl: false,
     });
 
+    mapRef.current = mapInstance;
+
+    // Click эвент
     mapInstance.on("click", (e) => {
-      if (currentMarker) {
-        currentMarker.remove();
+      // Хуучин marker-ийг устгах
+      if (markerRef.current) {
+        markerRef.current.remove();
       }
 
-      const newMarker = new mapboxgl.Marker({
-        color: "black",
-      })
+      // Шинэ marker нэмэх
+      const newMarker = new mapboxgl.Marker({ color: "black" })
         .setLngLat(e.lngLat)
         .addTo(mapInstance);
 
-      setCurrentMarker(newMarker);
+      markerRef.current = newMarker;
       onClick(e.lngLat);
     });
 
-    setMap(mapInstance);
-
-    return () => {
-      mapInstance.remove();
-      setMap(null);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!map || !coordinates) return;
-
-    map.flyTo({
-      center: coordinates,
-    });
-
-    if (currentMarker) {
-      currentMarker.remove();
+    // Анхны coordinates байвал marker нэмэх
+    if (isValidCoordinates(coordinates)) {
+      const initialMarker = new mapboxgl.Marker({ color: "black" })
+        .setLngLat(coordinates)
+        .addTo(mapInstance);
+      markerRef.current = initialMarker;
     }
 
-    const newMarker = new mapboxgl.Marker({
-      color: "black",
-    })
-      .setLngLat(coordinates)
-      .addTo(map);
+    // Cleanup
+    return () => {
+      mapInstance.remove();
+      mapRef.current = null;
+    };
+  }, []); // Зөвхөн анх удаа ажиллана
 
-    setCurrentMarker(newMarker);
-  }, [coordinates, map]);
+  useEffect(() => {
+    if (!mapRef.current || !isValidCoordinates(coordinates)) return;
+
+    // Coordinates өөрчлөгдвөл map-г төвлөрүүлж, marker шинэчлэх
+    mapRef.current.flyTo({ center: coordinates });
+
+    // Хуучин marker-ийг устгах
+    if (markerRef.current) {
+      markerRef.current.remove();
+    }
+
+    // Шинэ marker нэмэх
+    const newMarker = new mapboxgl.Marker({ color: "black" })
+      .setLngLat(coordinates)
+      .addTo(mapRef.current);
+
+    markerRef.current = newMarker;
+  }, [coordinates]); // coordinates өөрчлөгдвөл ажиллана
 
   return (
     <div

@@ -60,7 +60,8 @@ function LoginPage() {
       align="center"
       justify="center"
       style={{
-        background: "linear-gradient(135deg, #6e8efb 0%, #a777e3 100%)",
+        background:
+          "linear-gradient(135deg,rgb(32, 34, 41) 0%,rgb(19, 7, 33) 100%)",
         overflow: "hidden",
       }}
     >
@@ -137,7 +138,7 @@ function LoginPage() {
                   loading={loading}
                   radius="xl"
                   variant="gradient"
-                  gradient={{ from: "#6e8efb", to: "#a777e3", deg: 135 }}
+                  gradient={{ from: "#222736", to: "#130229", deg: 135 }}
                   style={{
                     transition: "all 0.3s",
                     "&:hover": {
@@ -151,16 +152,16 @@ function LoginPage() {
               </Stack>
             )}
           </Form>
-          <Group justify="center">
+          {/* <Group justify="center">
             <Text size="xs" c="gray.7">
               Нууц үгээ мартсан уу?{" "}
               <Link href="/forgot" passHref>
-                <Anchor component="span" c="blue.6" fw={600}>
+                <Anchor component="span" fw={600}>
                   Энд дарна уу
                 </Anchor>
               </Link>
             </Text>
-          </Group>
+          </Group> */}
         </Stack>
       </Card>
     </Flex>
