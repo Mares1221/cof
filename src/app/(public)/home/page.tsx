@@ -9,6 +9,7 @@ import { IconList, IconMapPin } from "@tabler/icons-react";
 import { useState } from "react";
 import Footer from "../footer/page";
 import classes from "./home.module.css";
+import LandingComparison from "@/components/ui/calculation";
 
 export default function HomePage() {
   const [tabs, setTabs] = useState<string>("MAP");
@@ -152,6 +153,7 @@ export default function HomePage() {
           )}
         </div>
       </Stack>
+      <LandingComparison />
       <Footer />
     </>
   );
